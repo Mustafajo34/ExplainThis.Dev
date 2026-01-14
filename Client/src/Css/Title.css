@@ -1,0 +1,48 @@
+/* span wrapper felx column */
+.span_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 2rem;
+  font-weight: bold;
+  opacity: 1;
+  transition: opacity 1s ease; /* fade transition */
+}
+
+/* Fade in */
+
+/* Fade out */
+.fade-out {
+  opacity: 0;
+}
+
+/* span Welcome */
+#span1 {
+  color: white;
+  text-shadow: 2px 2px 8px black;
+  position: absolute;
+  top: -0.6rem;
+  left: 3rem;
+  letter-spacing: 5px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+/* span to */
+#span2 {
+  color: white;
+  text-shadow: 2px 2px 8px black;
+  position: absolute;
+  top: 3rem;
+  left: 5rem;
+  letter-spacing: 5px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+/* span ExplainThis.Dev */
+#span3 {
+  color: white;
+  text-shadow: 2px 2px 8px black;
+  position: absolute;
+  top: 7rem;
+  left: 6rem;
+  letter-spacing: 2px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

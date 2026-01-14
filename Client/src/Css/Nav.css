@@ -1,0 +1,134 @@
+/* Navbar flex  */
+nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(41, 40, 40);
+  border: 2px solid rgb(41, 40, 40);
+  box-shadow: 2px 2px 8px black;
+  width: 100%;
+  height: 8vh;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  right: 0;
+}
+/* hamburger sign in nav positioning */
+#hamburger_sign {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  font-size: 2rem;
+  color: white;
+}
+#hamburger_sign:hover {
+  cursor: pointer;
+}
+/* nav logo sign and positioning */
+.nav-logo {
+  border-radius: 5rem;
+  height: 60px;
+  margin-top: 0.25rem;
+  margin-right: 0.5rem;
+}
+
+ul {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 25px;
+}
+
+li {
+  list-style: none;
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+  letter-spacing: 5px;
+}
+#top_list {
+  margin-top: 1rem;
+}
+
+ul.open {
+  height: 92vh;
+  max-width: 100%;
+  width: 80vw;
+  position: absolute;
+  top: 4.6rem;
+  left: -0.1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: rgb(41, 40, 40);
+  box-shadow: 2px 2px 8px black;
+
+  /* 🔹 animation end state */
+  opacity: 1;
+  transform: translateX(0);
+}
+
+ul.close {
+  /* 🔹 animation start state */
+  height: 92vh;
+  max-width: 100%;
+  width: 80vw;
+  position: absolute;
+  top: 4.6rem;
+  left: -0.1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: rgb(41, 40, 40);
+  box-shadow: 2px 2px 8px black;
+
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+/* 🔹 transition lives on the base selector */
+ul {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* nav_drop open/close */
+
+/* ul {
+  position: absolute;
+  z-index: 1000;
+}
+li {
+  list-style: none;
+  color: white;
+}
+
+ul.open {
+  height: 75vh;
+  max-width: 100%;
+  width: 60vw;
+  position: absolute;
+  top: 4.6rem;
+  left: -0.1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(41, 40, 40);
+  box-shadow: 2px 2px 8px black;
+  z-index: 200;
+}
+ul.close {
+  display: none;
+}
+/* list-style: none;
+padding: 0;
+margin: 0;
+overflow: hidden;
+
+max-height: 0;
+opacity: 0;
+transform: translateY(-8px);
+
+ */
