@@ -33,6 +33,7 @@ nav {
 
 ul {
   position: absolute;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 
   display: flex;
   flex-direction: column;
@@ -52,11 +53,11 @@ li {
 }
 
 ul.open {
-  height: 92vh;
+  height: 94vh;
   max-width: 100%;
   width: 80vw;
   position: absolute;
-  top: 4.6rem;
+  top: 4.455rem;
   left: -0.1rem;
 
   display: flex;
@@ -91,9 +92,7 @@ ul.close {
 }
 
 /* 🔹 transition lives on the base selector */
-ul {
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
+
 
 /* nav_drop open/close */
 
