@@ -4,7 +4,7 @@ import "../Css/Nav.css";
 
 const Nav = () => {
   const [toggle, setToggle] = useState(false);
-
+  // toggle function hangling true false value for open close action
   const handleToggle = () => {
     setToggle((prev) => !prev);
   };
@@ -13,9 +13,11 @@ const Nav = () => {
     <div>
       <nav>
         <div>
+          {/* span toggle ternary open close */}
           <span onClick={handleToggle} id="hamburger_sign">
             {toggle ? "✖" : "☰"}
           </span>
+          {/* toggle state classname Open || Close */}
           <ul className={toggle ? "open" : "close"}>
             <li id="top_list">New Chat</li>
             <li>Images</li>
