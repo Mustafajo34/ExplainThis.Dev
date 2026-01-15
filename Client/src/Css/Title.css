@@ -24,7 +24,8 @@
   top: -0.6rem;
   left: 3rem;
   letter-spacing: 5px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 /* span to */
 #span2 {
@@ -34,7 +35,8 @@
   top: 3rem;
   left: 5rem;
   letter-spacing: 5px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 /* span ExplainThis.Dev */
 #span3 {
@@ -44,5 +46,6 @@
   top: 7rem;
   left: 4rem;
   letter-spacing: 2px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }

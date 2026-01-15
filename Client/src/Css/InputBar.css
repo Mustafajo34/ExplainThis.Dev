@@ -5,6 +5,7 @@ form {
   gap: 0.5rem;
 }
 /* text Area */
+
 #textArea_bar {
   width: 24rem;
   height: 3.5rem;
@@ -12,7 +13,7 @@ form {
   box-shadow: 2px 2px 8px black;
   border: 1px solid rgb(41, 40, 40);
   background-color: rgb(41, 40, 40);
-  text-align: left;
+  text-align: center;
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
   color: white;
@@ -20,7 +21,7 @@ form {
 }
 /* submit button */
 #submit_question {
-  font-size: .8rem;
+  font-size: 0.8rem;
   border: 0.5px solid black;
   border-radius: 2rem;
   box-shadow: 2px 2px 8px black;
@@ -33,5 +34,23 @@ form {
   color: white;
 }
 #submit_question:hover {
+  cursor: pointer;
+}
+
+/* Icons */
+#image_icon {
+  position: absolute;
+  bottom: 3.9rem;
+  left: 2rem;
+}
+#image_icon:hover {
+  cursor: pointer;
+}
+#mic_icon {
+  position: absolute;
+  bottom: 3.9rem;
+  right: 2rem;
+}
+#mic_icon:hover {
   cursor: pointer;
 }

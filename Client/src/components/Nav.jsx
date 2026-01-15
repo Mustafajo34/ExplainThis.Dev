@@ -22,6 +22,7 @@ const Nav = () => {
             <li>Projects</li>
           </ul>
         </div>
+        {/* <h1>ExplainThis.Dev</h1> */}
 
         <img src={logo} alt="Explain This logo" className="nav-logo" />
       </nav>

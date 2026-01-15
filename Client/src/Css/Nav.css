@@ -15,9 +15,9 @@ nav {
 /* hamburger sign in nav positioning */
 #hamburger_sign {
   position: fixed;
-  top: 1rem;
+  top: 1.5rem;
   left: 1rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: white;
 }
 #hamburger_sign:hover {
@@ -53,11 +53,11 @@ li {
 }
 
 ul.open {
-  height: 94vh;
+  height: 92vh;
   max-width: 100%;
   width: 80vw;
   position: absolute;
-  top: 4.455rem;
+  top: 4.69rem;
   left: -0.1rem;
 
   display: flex;
