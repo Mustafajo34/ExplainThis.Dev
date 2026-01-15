@@ -1,10 +1,19 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const app = express();
-app.use(cors());
-const PORT = process.env.PORT || 5000;
+require("dotenv").config(); // dotenv initialized
+const express = require("express"); // express declared
+const cors = require("cors"); // cors declared
+const app = express(); //app declared
+app.use(cors()); //cors initialized
+const PORT = process.env.PORT || 5000; //port initialized
 
+const explainThis = require("./Routes/explainThis.js"); //explainthis route declared
+app.use("/api", explainThis); //explain this initialized
+
+// get test route to establish server is communicating properly
+app.get("/test", async (req, res) => {
+  res.send("Backend is up and Running!");
+});
+
+// server declared and initialized
 app.listen(PORT, () => {
   console.log("Server is up and running!");
 });
