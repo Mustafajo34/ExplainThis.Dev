@@ -1,11 +1,18 @@
 const validateInput = async (req, res, next) => {
   try {
-    const { input } = req.body;
-    if (!input || typeof input !== "string") {
+    // Number to String Validation
+    let { input } = req.body;
+    if (typeof input === "number") {
+      input = input.toString();
+    }
+    // validate input non empty
+    if (typeof input !== "string" || input.trim().length === 0) {
       return res.status(400).json({
-        Error: "Input must be non-empty String! ",
+        error: "Input must be a non-empty string or number",
       });
     }
+    req.body.input = input.trim();
+    return next();
   } catch (error) {}
 };
 
