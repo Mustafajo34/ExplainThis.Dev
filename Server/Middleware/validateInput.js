@@ -13,7 +13,11 @@ const validateInput = async (req, res, next) => {
     }
     req.body.input = input.trim();
     return next();
-  } catch (error) {}
+  } catch (err) {
+    res.json({
+      Error: Message.err,
+    });
+  }
 };
 
 module.exports = validateInput;
