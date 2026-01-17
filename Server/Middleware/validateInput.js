@@ -1,22 +1,35 @@
 const validateInput = async (req, res, next) => {
   try {
-    // Number to String Validation
     let { input } = req.body;
-    if (typeof input === "number") {
-      input = input.toString();
+
+    // Reject undefined or null
+    if (input === undefined || input === null) {
+      return res.status(400).json({
+        error: "Input is required",
+      });
     }
-    // validate input non empty
+
+    // Convert number to string (reject NaN)
+    if (typeof input === "number") {
+      if (Number.isNaN(input)) {
+        return res.status(400).json({
+          error: "Input cannot be NaN",
+        });
+      }
+      input = String(input);
+    }
+
+    // Validate string
     if (typeof input !== "string" || input.trim().length === 0) {
       return res.status(400).json({
         error: "Input must be a non-empty string or number",
       });
     }
+
     req.body.input = input.trim();
-    return next();
+    next();
   } catch (err) {
-    res.json({
-      Error: Message.err,
-    });
+    next(err);
   }
 };
 
