@@ -13,11 +13,6 @@ import {
   bash,
 } from "react-syntax-highlighter/dist/esm/languages/prism";
 
-// Register languages for Prism
-SyntaxHighlighter.registerLanguage("javascript", javascript);
-SyntaxHighlighter.registerLanguage("python", python);
-SyntaxHighlighter.registerLanguage("java", java);
-SyntaxHighlighter.registerLanguage("bash", bash);
 // Css imports
 import "../Css/ExplainThis.css";
 import language from "react-syntax-highlighter/dist/esm/languages/hljs/1c";
@@ -34,7 +29,7 @@ const ExplainThis = () => {
   const handleSubmit = async () => {
     if (!input.trim()) return;
 
-    // declared variables
+    // declared variables states
     setLoading(true);
     setError("");
     setCode("");
@@ -56,7 +51,7 @@ const ExplainThis = () => {
       }
       // variable that holds succesfully fetched data
       const data = await response.json();
-      //  set successful code in python memory
+      //  set successful data in code memory
       setCode(data.code);
       setLanguage(data.language || "python");
     } catch (err) {
@@ -67,7 +62,7 @@ const ExplainThis = () => {
   };
   //  handleDownload python function
   const handleDownload = () => {
-    const blob = new Blob([pythonCode], { type: "text/x-python" });
+    const blob = new Blob([code], { type: "text/x-python" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -94,19 +89,20 @@ const ExplainThis = () => {
         {/* error notify if loading unsuccessful */}
         {error && <p className="error">{error}</p>}
         {/* render fetched code */}
-        {pythonCode && (
-          <div className="output-container">
+        {code && (
+          <div className="code-output">
             <SyntaxHighlighter
               language={language}
               style={oneLight}
-              wrapLongLines={true}
+              wrapLongLines
               className="syntax"
             >
-              {pythonCode}
+              {/* displayed code */}
+              {code}
             </SyntaxHighlighter>
-
+            {/* download button */}
             <button onClick={handleDownload} className="download-btn">
-              Download .py
+              Download {language} file
             </button>
           </div>
         )}
