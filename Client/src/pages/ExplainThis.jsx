@@ -6,16 +6,9 @@ import InputBar from "../components/InputBar";
 // Package Imports
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-import {
-  javascript,
-  python,
-  java,
-  bash,
-} from "react-syntax-highlighter/dist/esm/languages/prism";
 
 // Css imports
 import "../Css/ExplainThis.css";
-import language from "react-syntax-highlighter/dist/esm/languages/hljs/1c";
 
 const ExplainThis = () => {
   // useState variables
@@ -110,7 +103,7 @@ const ExplainThis = () => {
       {/* footer component area */}
       <footer>
         <div>
-          <InputBar />
+          <InputBar value={input} onChange={setInput} onSubmit={handleSubmit} />
         </div>
       </footer>
     </div>
