@@ -5,14 +5,29 @@ import Title from "../components/Title.jsx";
 import InputBar from "../components/InputBar";
 // Package Imports
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+  javascript,
+  python,
+  java,
+  bash,
+} from "react-syntax-highlighter/dist/esm/languages/prism";
+
+// Register languages for Prism
+SyntaxHighlighter.registerLanguage("javascript", javascript);
+SyntaxHighlighter.registerLanguage("python", python);
+SyntaxHighlighter.registerLanguage("java", java);
+SyntaxHighlighter.registerLanguage("bash", bash);
 // Css imports
 import "../Css/ExplainThis.css";
+import language from "react-syntax-highlighter/dist/esm/languages/hljs/1c";
 
 const ExplainThis = () => {
   // useState variables
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [pythonCode, setPythonCode] = useState("");
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("");
   const [input, setInput] = useState("");
 
   //  handleSubmit function
@@ -22,7 +37,7 @@ const ExplainThis = () => {
     // declared variables
     setLoading(true);
     setError("");
-    setPythonCode("");
+    setCode("");
 
     try {
       // variable holding connection
@@ -40,9 +55,10 @@ const ExplainThis = () => {
         throw new Error(`unable to retrieve data ${response.status} `);
       }
       // variable that holds succesfully fetched data
-      const code = await response.text();
+      const data = await response.json();
       //  set successful code in python memory
-      setPythonCode(code);
+      setCode(data.code);
+      setLanguage(data.language || "python");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -72,7 +88,29 @@ const ExplainThis = () => {
         <Title />
       </header>
       {/* main component area */}
-      <main></main>
+      <main>
+        {/* loading sign */}
+        {loading && <p className="loading">Generating your Code........</p>}
+        {/* error notify if loading unsuccessful */}
+        {error && <p className="error">{error}</p>}
+        {/* render fetched code */}
+        {pythonCode && (
+          <div className="output-container">
+            <SyntaxHighlighter
+              language={language}
+              style={oneLight}
+              wrapLongLines={true}
+              className="syntax"
+            >
+              {pythonCode}
+            </SyntaxHighlighter>
+
+            <button onClick={handleDownload} className="download-btn">
+              Download .py
+            </button>
+          </div>
+        )}
+      </main>
       {/* footer component area */}
       <footer>
         <div>
