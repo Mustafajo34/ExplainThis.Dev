@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import "../Css/InputBar.css";
 
-const InputBar = () => {
+const InputBar = ({onChange, onSubmit, value}) => {
+  
   return (
     <div className="input_wrapper">
       {/* Fontawesome Icons single icon */}
@@ -20,11 +22,18 @@ const InputBar = () => {
         style={{ color: "#858585" }}
       />
       {/* form for textarea input */}
-      <form action="">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit()
+        }}
+      >
         <textarea
           name=""
           id="textArea_bar"
-          placeholder="How May i Help You..."
+          placeholder="How May I Help You..."
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         ></textarea>
         {/* submit button */}
         <button type="submit" id="submit_question">
