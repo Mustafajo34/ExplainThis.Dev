@@ -39,14 +39,28 @@ const ExplainThis = () => {
       if (!response.ok) {
         throw new Error(`unable to retrieve data ${response.status} `);
       }
-
-      const code = response.text;
+      // variable that holds succesfully fetched data
+      const code = await response.text();
+      //  set successful code in python memory
       setPythonCode(code);
     } catch (err) {
-      setError(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
-  //  handleDownload function
+  //  handleDownload python function
+  const handleDownload = () => {
+    const blob = new Blob([pythonCode], { type: "text/x-python" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "output.py";
+    a.click();
+
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="App">
       {/* nav components */}
