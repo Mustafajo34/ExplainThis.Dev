@@ -17,5 +17,5 @@ app.get("/test", async (req, res) => {
 
 // server declared and initialized
 app.listen(PORT, () => {
-  console.log("Server is up and running!");
+  console.log(`Server is up and running! ${PORT}`);
 });
