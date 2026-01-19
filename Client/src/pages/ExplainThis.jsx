@@ -20,9 +20,31 @@ const ExplainThis = () => {
     if (!input.trim()) return;
 
     // declared variables
-    setError("");
     setLoading(true);
+    setError("");
     setPythonCode("");
+
+    try {
+      // variable holding connection
+      const api = "http://localhost:4189/api/python";
+      // fetch response
+      const response = await fetch(api, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ input }),
+      });
+      // check fetch response
+      if (!response.ok) {
+        throw new Error(`unable to retrieve data ${response.status} `);
+      }
+
+      const code = response.text;
+      setPythonCode(code);
+    } catch (err) {
+      setError(err);
+    }
   };
   //  handleDownload function
   return (
