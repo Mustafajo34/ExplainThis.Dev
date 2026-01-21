@@ -14,7 +14,7 @@ const ExplainThis = () => {
   // useState variables
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState("");
+  const [explanation, setExplanation] = useState("");
   const [language, setLanguage] = useState("");
   const [input, setInput] = useState("");
 
@@ -25,7 +25,7 @@ const ExplainThis = () => {
     // declared variables states
     setLoading(true);
     setError("");
-    setCode("");
+    setExplanation("");
 
     try {
       // variable holding connection
@@ -45,8 +45,8 @@ const ExplainThis = () => {
       // variable that holds succesfully fetched data
       const data = await response.json();
       //  set successful data in code memory
-      setCode(data.code);
-      setLanguage(data.language || "python");
+      setExplanation(data.explanation);
+      setLanguage(data.language || "text");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -55,7 +55,7 @@ const ExplainThis = () => {
   };
   //  handleDownload python function
   const handleDownload = () => {
-    const blob = new Blob([code], { type: "text/x-python" });
+    const blob = new Blob([explanation], { type: "text/x-python" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -78,27 +78,20 @@ const ExplainThis = () => {
       {/* main component area */}
       <main>
         {/* loading sign */}
-        {loading && <p className="loading">Generating your Code........</p>}
+        {loading && <p className="loading">Analyzing.......</p>}
         {/* error notify if loading unsuccessful */}
         {error && <p className="error">{error}</p>}
-        {/* render fetched code */}
-        {code && (
-          <div className="code-output">
-            <SyntaxHighlighter
-              language={language}
-              style={oneLight}
-              wrapLongLines
-              className="syntax"
-            >
-              {/* displayed code */}
-              {code}
-            </SyntaxHighlighter>
-            {/* download button */}
-            <button onClick={handleDownload} className="download-btn">
-              Download {language} file
-            </button>
-          </div>
+        {/* render fetched explanation */}
+        {explanation && (
+          <section className="explanation-output">
+            <h3>Explanation</h3>
+            <pre>{explanation}</pre>
+          </section>
         )}
+        {/* download button */}
+        {/* <button onClick={handleDownload} className="download-btn">
+          Download {language} file
+        </button> */}
       </main>
       {/* footer component area */}
       <footer>
