@@ -40,12 +40,21 @@ const ExplainThis = () => {
       });
       // check fetch response
       if (!response.ok) {
-        throw new Error(`unable to retrieve data ${response.status} `);
+        const errData = await response.json();
+        throw new Error(` ${errData.error} || unable to retrieve data `);
       }
       // variable that holds succesfully fetched data
       const data = await response.json();
       //  set successful data in code memory
-      setExplanation(data.explanation);
+      setExplanation(
+        data.explanation || {
+          summary: data.explanation || "",
+          breakdown: [],
+          key_points: [],
+          limitations: [],
+        },
+      );
+      // Store language
       setLanguage(data.language || "text");
     } catch (err) {
       setError(err.message);
@@ -53,15 +62,26 @@ const ExplainThis = () => {
       setLoading(false);
     }
   };
-  //  handleDownload python function
+  // Handle download of explanation as .txt
   const handleDownload = () => {
-    const blob = new Blob([explanation], { type: "text/x-python" });
+    if (!explanation) return;
+
+    let text = "";
+
+    if (explanation.summary) text += `Summary:\n${explanation.summary}\n\n`;
+    if (explanation.breakdown?.length)
+      text += `Breakdown:\n${explanation.breakdown.join("\n")}\n\n`;
+    if (explanation.key_points?.length)
+      text += `Key Points:\n${explanation.key_points.join("\n")}\n\n`;
+    if (explanation.limitations?.length)
+      text += `Limitations:\n${explanation.limitations.join("\n")}\n\n`;
+
+    const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "output.py";
+    a.download = "explanation.txt";
     a.click();
-
     URL.revokeObjectURL(url);
   };
 
@@ -78,20 +98,65 @@ const ExplainThis = () => {
       {/* main component area */}
       <main>
         {/* loading sign */}
-        {loading && <p className="loading">Analyzing.......</p>}
+        {loading && <p className="loading">Generating your explanation...</p>}
         {/* error notify if loading unsuccessful */}
         {error && <p className="error">{error}</p>}
         {/* render fetched explanation */}
         {explanation && (
           <section className="explanation-output">
-            <h3>Explanation</h3>
-            <pre>{explanation}</pre>
+            {/* Language */}
+            <h4>Language: {language}</h4>
+
+            {/* Summary */}
+            {explanation.summary && (
+              <div className="summary">
+                <h3>Summary</h3>
+                <p>{explanation.summary}</p>
+              </div>
+            )}
+
+            {/* Breakdown */}
+            {explanation.breakdown && explanation.breakdown.length > 0 && (
+              <div className="breakdown">
+                <h3>Breakdown</h3>
+                <ul>
+                  {explanation.breakdown.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Key Points */}
+            {explanation.key_points && explanation.key_points.length > 0 && (
+              <div className="key-points">
+                <h3>Key Points</h3>
+                <ul>
+                  {explanation.key_points.map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Limitations */}
+            {explanation.limitations && explanation.limitations.length > 0 && (
+              <div className="limitations">
+                <h3>Limitations</h3>
+                <ul>
+                  {explanation.limitations.map((lim, idx) => (
+                    <li key={idx}>{lim}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Download button */}
+            <button onClick={handleDownload} className="download-btn">
+              Download Explanation
+            </button>
           </section>
         )}
-        {/* download button */}
-        {/* <button onClick={handleDownload} className="download-btn">
-          Download {language} file
-        </button> */}
       </main>
       {/* footer component area */}
       <footer>
