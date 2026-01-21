@@ -102,24 +102,25 @@ const ExplainThis = () => {
         {/* error notify if loading unsuccessful */}
         {error && <p className="error">{error}</p>}
         {/* render fetched explanation */}
+
         {explanation && (
           <section className="explanation-output">
             {/* Language */}
-            <h4>Language: {language}</h4>
+            <h4 className="language-label">Language: {language}</h4>
 
             {/* Summary */}
             {explanation.summary && (
-              <div className="summary">
-                <h3>Summary</h3>
-                <p>{explanation.summary}</p>
+              <div className="section summary">
+                <h3 className="section-title">Summary</h3>
+                <p className="section-text">{explanation.summary}</p>
               </div>
             )}
 
             {/* Breakdown */}
-            {explanation.breakdown && explanation.breakdown.length > 0 && (
-              <div className="breakdown">
-                <h3>Breakdown</h3>
-                <ul>
+            {explanation.breakdown?.length > 0 && (
+              <div className="section breakdown">
+                <h3 className="section-title">Breakdown</h3>
+                <ul className="section-list">
                   {explanation.breakdown.map((item, idx) => (
                     <li key={idx}>{item}</li>
                   ))}
@@ -128,10 +129,10 @@ const ExplainThis = () => {
             )}
 
             {/* Key Points */}
-            {explanation.key_points && explanation.key_points.length > 0 && (
-              <div className="key-points">
-                <h3>Key Points</h3>
-                <ul>
+            {explanation.key_points?.length > 0 && (
+              <div className="section key-points">
+                <h3 className="section-title">Key Points</h3>
+                <ul className="section-list">
                   {explanation.key_points.map((point, idx) => (
                     <li key={idx}>{point}</li>
                   ))}
@@ -140,10 +141,10 @@ const ExplainThis = () => {
             )}
 
             {/* Limitations */}
-            {explanation.limitations && explanation.limitations.length > 0 && (
-              <div className="limitations">
-                <h3>Limitations</h3>
-                <ul>
+            {explanation.limitations?.length > 0 && (
+              <div className="section limitations">
+                <h3 className="section-title">Limitations</h3>
+                <ul className="section-list">
                   {explanation.limitations.map((lim, idx) => (
                     <li key={idx}>{lim}</li>
                   ))}
