@@ -1,66 +1,79 @@
 const router = require("express").Router();
 const validateInput = require("../Middleware/validateInput.js");
 const { spawn } = require("child_process");
+const path = require("path");
 
 router.post("/python", validateInput, async (req, res) => {
-  // input variable that holds req body object
   const { input } = req.body;
-  const pythonPath =
-    "C:\\Users\\Admin\\OneDrive\\Desktop\\ChiEAC Projects\\ExplainThis_dev\\Server\\LLM\\venv\\Scripts\\python.exe";
 
-  // Spawn the Python LLM adapter
-  const python = spawn(pythonPath, ["../LLM/explain_llm.py"]);
+  try {
+    // Absolute path to your Python executable
 
-  let stdout = "";
-  let stderr = "";
+    const scriptPath = path.resolve(__dirname, "../LLM/explain_llm.py");
+    const pythonPath = path.resolve(
+      __dirname,
+      "../LLM/venv/Scripts/python.exe",
+    );
 
-  python.stdin.write(input);
-  python.stdin.end();
+    const python = spawn(pythonPath, [scriptPath]);
 
-  python.stdout.on("data", (data) => {
-    stdout += data.toString();
-  });
+    let stdout = "";
+    let stderr = "";
 
-  python.stderr.on("data", (data) => {
-    stderr += data.toString();
-  });
+    python.stdin.write(input);
+    python.stdin.end();
 
-  python.on("close", () => {
-    if (stderr) {
-      return res.status(500).json({
-        type: "explanation",
-        format: "structured",
-        content: {
-          summary: "Internal explanation error.",
-          breakdown: [],
-          key_points: [],
-          limitations: [
-            "This explanation does not execute code.",
-            "No security or safety guarantees are made.",
-          ],
-        },
-      });
-    }
+    python.stdout.on("data", (data) => {
+      stdout += data.toString();
+    });
 
-    try {
-      const parsed = JSON.parse(stdout);
-      return res.json(parsed);
-    } catch {
-      return res.status(500).json({
-        type: "explanation",
-        format: "structured",
-        content: {
-          summary: "Invalid LLM response.",
-          breakdown: [],
-          key_points: [],
-          limitations: [
-            "This explanation does not execute code.",
-            "No security or safety guarantees are made.",
-          ],
-        },
-      });
-    }
-  });
+    python.stderr.on("data", (data) => {
+      stderr += data.toString();
+    });
+
+    python.on("close", () => {
+      try {
+        if (stderr) {
+          throw new Error(stderr);
+        }
+
+        const parsed = JSON.parse(stdout);
+        return res.json(parsed);
+      } catch (err) {
+        console.error("Python execution error:", err.message);
+
+        return res.status(500).json({
+          type: "explanation",
+          format: "structured",
+          content: {
+            summary: "Internal explanation error.",
+            breakdown: [],
+            key_points: [],
+            limitations: [
+              "This explanation does not execute code.",
+              "No security or safety guarantees are made.",
+            ],
+          },
+        });
+      }
+    });
+  } catch (err) {
+    console.error("Unexpected backend error:", err.message);
+
+    return res.status(500).json({
+      type: "explanation",
+      format: "structured",
+      content: {
+        summary: "Unexpected server error.",
+        breakdown: [],
+        key_points: [],
+        limitations: [
+          "This explanation does not execute code.",
+          "No security or safety guarantees are made.",
+        ],
+      },
+    });
+  }
 });
 
 module.exports = router;
