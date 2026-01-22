@@ -9,7 +9,7 @@ router.post("/python", validateInput, async (req, res) => {
   try {
     // Absolute path to your Python executable
 
-    const scriptPath = path.resolve(__dirname, "../LLM/explain_llm.py");
+    const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
     const pythonPath = path.resolve(
       __dirname,
       "../LLM/venv/Scripts/python.exe",
