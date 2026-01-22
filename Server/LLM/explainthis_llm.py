@@ -65,10 +65,32 @@ You MUST return JSON ONLY in this exact schema:
 
 
 # -------------------------
+# Helper: safe JSON parser
+# -------------------------
+def safe_json_loads(raw):
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        return {
+            "type": "explanation",
+            "format": "structured",
+            "content": {
+                "summary": "Unable to parse LLM output.",
+                "breakdown": [],
+                "key_points": [],
+                "limitations": [
+                    "This explanation does not execute code.",
+                    "No security or safety guarantees are made.",
+                ],
+            },
+        }
+
+
+# -------------------------
 # LLM explanation function
 # -------------------------
 def explain_input(user_input: str) -> dict:
-    # --- Debug: show what input was received ---
+    user_input = user_input.strip()  # Remove accidental whitespace/newlines
     print(f"DEBUG_INPUT: {user_input}", file=sys.stderr)
 
     try:
@@ -81,14 +103,10 @@ def explain_input(user_input: str) -> dict:
         )
 
         raw = response.choices[0].message.content.strip()
-
-        # --- Debug: show raw LLM output ---
         print(f"DEBUG_RAW_OUTPUT: {raw}", file=sys.stderr)
 
-        # Force JSON-only output
-        parsed = json.loads(raw)
+        parsed = safe_json_loads(raw)
 
-        # Final schema enforcement
         return {
             "type": "explanation",
             "format": "structured",
@@ -107,7 +125,6 @@ def explain_input(user_input: str) -> dict:
         }
 
     except Exception as e:
-        # --- Debug: show exception ---
         print(f"DEBUG_EXCEPTION: {str(e)}", file=sys.stderr)
         return {
             "type": "explanation",
@@ -130,10 +147,7 @@ def explain_input(user_input: str) -> dict:
 def main():
     user_input = sys.stdin.read()
     result = explain_input(user_input)
-
-    # --- Debug: show final JSON before printing ---
     print(f"DEBUG_FINAL_JSON: {json.dumps(result)}", file=sys.stderr)
-
     print(json.dumps(result))
 
 

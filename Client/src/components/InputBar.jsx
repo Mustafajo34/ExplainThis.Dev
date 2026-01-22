@@ -4,7 +4,7 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import "../Css/InputBar.css";
 
-const InputBar = ({onChange, onSubmit, value}) => {
+const InputBar = ({value, onChange, onSubmit}) => {
   
   return (
     <div className="input_wrapper">

@@ -46,16 +46,9 @@ const ExplainThis = () => {
       // variable that holds succesfully fetched data
       const data = await response.json();
       //  set successful data in code memory
-      setExplanation(
-        data.explanation || {
-          summary: data.explanation || "",
-          breakdown: [],
-          key_points: [],
-          limitations: [],
-        },
-      );
+      setExplanation(data);
       // Store language
-      setLanguage(data.language || "text");
+      setLanguage( "text");
     } catch (err) {
       setError(err.message);
     } finally {

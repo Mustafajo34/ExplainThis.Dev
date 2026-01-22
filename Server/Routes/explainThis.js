@@ -6,6 +6,9 @@ const path = require("path");
 router.post("/python", validateInput, async (req, res) => {
   const { input } = req.body;
 
+  let stdout = "";
+  let stderr = "";
+
   try {
     // Absolute path to your Python executable
 
@@ -17,9 +20,6 @@ router.post("/python", validateInput, async (req, res) => {
 
     const python = spawn(pythonPath, [scriptPath]);
 
-    let stdout = "";
-    let stderr = "";
-
     python.stdin.write(input);
     python.stdin.end();
 
@@ -28,19 +28,37 @@ router.post("/python", validateInput, async (req, res) => {
     });
 
     python.stderr.on("data", (data) => {
+      // Capture debug prints without failing
       stderr += data.toString();
+      console.error(data.toString());
     });
 
-    python.on("close", () => {
-      try {
-        if (stderr) {
-          throw new Error(stderr);
-        }
+    // Timeout safeguard (optional, e.g., 15s)
+    const timeout = setTimeout(() => {
+      python.kill();
+      return res.status(500).json({
+        type: "explanation",
+        format: "structured",
+        content: {
+          summary: "Python execution timeout.",
+          breakdown: [],
+          key_points: [],
+          limitations: [
+            "This explanation does not execute code.",
+            "No security or safety guarantees are made.",
+          ],
+        },
+      });
+    }, 15000);
 
+    python.on("close", () => {
+      clearTimeout(timeout);
+      try {
+        // Always attempt to parse JSON even if stderr exists
         const parsed = JSON.parse(stdout);
         return res.json(parsed);
       } catch (err) {
-        console.error("Python execution error:", err.message);
+        console.error("Python JSON parse error:", err.message);
 
         return res.status(500).json({
           type: "explanation",
