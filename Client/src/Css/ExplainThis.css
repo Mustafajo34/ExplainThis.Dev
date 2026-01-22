@@ -19,6 +19,14 @@ header {
   top: 7rem;
 }
 
+main {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 12rem;
+  width: 100%;
+}
+
 /* footer */
 footer {
   display: flex;
