@@ -46,37 +46,25 @@ const ExplainThis = () => {
       // variable that holds succesfully fetched data
       const data = await response.json();
       //  set successful data in code memory
-      setExplanation(data);
+      // Use the backend content directly
+      setExplanation(
+        data.content || {
+          summary: "",
+          breakdown: [],
+          key_points: [],
+          limitations: [],
+        },
+      );
       // Store language
-      setLanguage( "text");
+      setLanguage("text");
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
+      setInput("");
     }
   };
   // Handle download of explanation as .txt
-  const handleDownload = () => {
-    if (!explanation) return;
-
-    let text = "";
-
-    if (explanation.summary) text += `Summary:\n${explanation.summary}\n\n`;
-    if (explanation.breakdown?.length)
-      text += `Breakdown:\n${explanation.breakdown.join("\n")}\n\n`;
-    if (explanation.key_points?.length)
-      text += `Key Points:\n${explanation.key_points.join("\n")}\n\n`;
-    if (explanation.limitations?.length)
-      text += `Limitations:\n${explanation.limitations.join("\n")}\n\n`;
-
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "explanation.txt";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <div className="App">
@@ -110,45 +98,28 @@ const ExplainThis = () => {
             )}
 
             {/* Breakdown */}
-            {explanation.breakdown?.length > 0 && (
+            {explanation.breakdown && (
               <div className="section breakdown">
                 <h3 className="section-title">Breakdown</h3>
-                <ul className="section-list">
-                  {explanation.breakdown.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
+                <p className="section-list">{explanation.breakdown}</p>
               </div>
             )}
 
             {/* Key Points */}
-            {explanation.key_points?.length > 0 && (
+            {explanation.key_points?.length && (
               <div className="section key-points">
                 <h3 className="section-title">Key Points</h3>
-                <ul className="section-list">
-                  {explanation.key_points.map((point, idx) => (
-                    <li key={idx}>{point}</li>
-                  ))}
-                </ul>
+                <p className="section-list">{explanation.key_points}</p>
               </div>
             )}
 
             {/* Limitations */}
-            {explanation.limitations?.length > 0 && (
+            {explanation.limitations && (
               <div className="section limitations">
                 <h3 className="section-title">Limitations</h3>
-                <ul className="section-list">
-                  {explanation.limitations.map((lim, idx) => (
-                    <li key={idx}>{lim}</li>
-                  ))}
-                </ul>
+                <p className="section-list">{explanation.limitations}</p>
               </div>
             )}
-
-            {/* Download button */}
-            <button onClick={handleDownload} className="download-btn">
-              Download Explanation
-            </button>
           </section>
         )}
       </main>

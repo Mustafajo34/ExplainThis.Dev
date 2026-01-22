@@ -19,12 +19,226 @@ header {
   top: 7rem;
 }
 
+/* =========================
+   Main Layout
+========================= */
 main {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
-  top: 12rem;
+  top: 5rem;
   width: 100%;
+  height: 75vh;
+
+  padding: 1rem;
+  box-sizing: border-box;
+
+  /* REQUIRED */
+  overflow: hidden;
+}
+
+/* Loading & Error */
+.loading,
+.error {
+  flex-shrink: 0;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.loading {
+  color: white;
+  text-shadow: 2px 2px 8px black;
+  font-size: 1rem;
+}
+
+.error {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+/* =========================
+   Explanation Output
+========================= */
+.explanation-output {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  width: 100%;
+  max-width: 900px;
+  border-radius: 12px;
+  padding: 1rem;
+
+  /* Flex + text safety */
+  min-width: 0;
+
+  /* Scroll container */
+  flex: 1 1 auto;
+  max-height: 100%;
+  overflow-y: auto;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Scrollbar (WebKit) */
+.explanation-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.explanation-output::-webkit-scrollbar-thumb {
+  background-color: rgba(235, 13, 216, 0.5);
+  border-radius: 4px;
+}
+
+.explanation-output::-webkit-scrollbar-track {
+  background-color: #1a191a;
+}
+
+/* =========================
+   🔥 HARD TYPOGRAPHY RESET
+   (Fixes stacked / spaced text)
+========================= */
+.explanation-output,
+.explanation-output * {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif !important;
+
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-transform: none !important;
+
+  line-height: 1.6 !important;
+  white-space: normal !important;
+
+  font-kerning: normal !important;
+  font-feature-settings: normal !important;
+}
+
+/* Explicit element reset */
+.explanation-output p,
+.explanation-output li,
+.explanation-output h3,
+.explanation-output h4 {
+  margin: 0;
+  padding: 0;
+  display: block;
+
+  letter-spacing: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* =========================
+   Language Label
+========================= */
+.language-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #555;
+}
+
+/* =========================
+   Section Cards
+========================= */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border-left: 5px solid #e20de2;
+
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+
+  min-width: 0;
+}
+
+/* =========================
+   Section Titles
+========================= */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* =========================
+   Paragraph Text
+========================= */
+.section-text {
+  font-size: 0.95rem;
+  color: #444;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* =========================
+   Lists
+========================= */
+.section-list {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.section-list li {
+  color: #555;
+  margin-bottom: 0.4rem;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* =========================
+   Optional: Code Safety
+========================= */
+pre,
+code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+/* =========================
+   Responsive Tweaks
+========================= */
+@media (min-width: 768px) {
+  main {
+    padding: 2rem;
+  }
+
+  .explanation-output {
+    padding: 2rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .section-text,
+  .section-list li {
+    font-size: 1rem;
+  }
+
+  .language-label {
+    font-size: 0.5rem;
+  }
 }
 
 /* footer */
@@ -37,116 +251,4 @@ footer {
   bottom: 3rem;
   width: 100%;
   height: 10vh;
-}
-
-.explanation-output {
-  width: 95%;
-  padding: 0.8rem;
-  margin-top: 1.5rem;
-  background: #2c2c2c; /* dark grey background */
-  border-radius: 0.5rem;
-  border: 1px solid #000; /* black border */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  box-sizing: border-box;
-  color: #fff; /* default text color white */
-}
-
-/* Language label */
-.language-label {
-  font-weight: 600;
-  margin-bottom: 0.8rem;
-  font-size: 0.95rem;
-  color: #fff;
-}
-
-/* Section containers */
-.section {
-  margin-bottom: 1.2rem;
-  border: 1px solid #000; /* black border for each section */
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-  background: #3a3a3a; /* slightly lighter grey for sections */
-}
-
-/* Section headings */
-.section-title {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  font-size: 1rem;
-  color: #fff;
-}
-
-/* Paragraph text */
-.section-text {
-  line-height: 1.5;
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-/* Lists for Breakdown, Key Points, Limitations */
-.section-list {
-  padding-left: 1.2rem;
-  color: #fff;
-  font-size: 0.9rem;
-  word-wrap: break-word;
-}
-
-/* Download button */
-.download-btn {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  background-color: #4caf50;
-  color: white;
-  border: 1px solid #000; /* black border */
-  border-radius: 0.3rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.download-btn:hover {
-  background-color: #45a049;
-}
-
-/* Loading and error messages */
-.loading,
-.error {
-  margin-top: 0.8rem;
-  font-weight: 500;
-  color: #fff;
-}
-
-.error {
-  color: #ff6b6b; /* red-ish for errors */
-}
-
-/* ==============================
-   Media queries for larger screens
-   ============================== */
-
-@media screen and (min-width: 601px) {
-  .explanation-output {
-    max-width: 800px;
-    padding: 1rem;
-    margin-top: 2rem;
-  }
-
-  .section-title {
-    font-size: 1.2rem;
-  }
-
-  .section-text,
-  .section-list {
-    font-size: 1rem;
-  }
-
-  .download-btn {
-    width: auto;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-  }
-
-  .language-label {
-    font-size: 1rem;
-  }
 }
