@@ -72,7 +72,6 @@ You MUST return JSON ONLY in this exact schema:
 MAX_INPUT_CHARS = 2500
 MAX_INPUT_LINES = 150
 MAX_OUTPUT_TOKENS = 1000
-
 RATE_LIMIT = 5
 RATE_WINDOW = 60  # seconds
 requests_by_ip = defaultdict(list)
