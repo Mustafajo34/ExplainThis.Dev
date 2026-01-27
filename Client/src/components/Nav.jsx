@@ -20,8 +20,7 @@ const Nav = () => {
           {/* toggle state classname Open || Close */}
           <ul className={toggle ? "open" : "close"}>
             <li id="top_list">New Chat</li>
-            <li>Images</li>
-            <li>Projects</li>
+            
           </ul>
         </div>
         {/* <h1>ExplainThis.Dev</h1> */}

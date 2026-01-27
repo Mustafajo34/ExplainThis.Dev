@@ -70,7 +70,7 @@ const ExplainThis = () => {
     <div className="App">
       {/* nav components */}
       <nav>
-        <Nav />
+        <Nav input={input} />
       </nav>
       {/* header comnponent area */}
       <header>
