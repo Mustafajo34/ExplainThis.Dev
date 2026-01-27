@@ -17,6 +17,7 @@ const ExplainThis = () => {
   const [explanation, setExplanation] = useState("");
   const [language, setLanguage] = useState("");
   const [input, setInput] = useState("");
+  const [savedInput, setSavedInput] = useState()
 
   //  handleSubmit function
   const handleSubmit = async () => {
