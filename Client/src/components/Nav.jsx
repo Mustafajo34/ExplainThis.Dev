@@ -11,7 +11,7 @@ const Nav = () => {
 
   return (
     <div>
-      <section className="vertical_nav"></section>
+     
       <nav>
         <div>
           {/* span toggle ternary open close */}

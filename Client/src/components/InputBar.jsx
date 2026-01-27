@@ -9,7 +9,7 @@ const InputBar = ({value, onChange, onSubmit}) => {
   return (
     <div className="input_wrapper">
       {/* Fontawesome Icons single icon */}
-      <FontAwesomeIcon
+      {/* <FontAwesomeIcon
         icon={faImage}
         id="image_icon"
         size="xl"
@@ -20,7 +20,7 @@ const InputBar = ({value, onChange, onSubmit}) => {
         id="mic_icon"
         size="xl"
         style={{ color: "#858585" }}
-      />
+      /> */}
       {/* form for textarea input */}
       <form
         onSubmit={(e) => {
