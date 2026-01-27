@@ -11,6 +11,7 @@ const Nav = () => {
 
   return (
     <div>
+      <section className="vertical_nav"></section>
       <nav>
         <div>
           {/* span toggle ternary open close */}
@@ -20,7 +21,6 @@ const Nav = () => {
           {/* toggle state classname Open || Close */}
           <ul className={toggle ? "open" : "close"}>
             <li id="top_list">New Chat</li>
-            
           </ul>
         </div>
         {/* <h1>ExplainThis.Dev</h1> */}
