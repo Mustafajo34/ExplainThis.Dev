@@ -17,7 +17,15 @@ const ExplainThis = () => {
   const [explanation, setExplanation] = useState("");
   const [language, setLanguage] = useState("");
   const [input, setInput] = useState("");
-  const [savedInput, setSavedInput] = useState()
+  // display Saved Input
+  const [savedInput, setSavedInput] = useState(() => {
+    try {
+      const stored = localStorage.getItem("savedInput");
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      setError(error.message);
+    }
+  });
 
   //  handleSubmit function
   const handleSubmit = async () => {
@@ -46,7 +54,7 @@ const ExplainThis = () => {
       }
       // variable that holds succesfully fetched data
       const data = await response.json();
-      //  set successful data in code memory
+
       // Use the backend content directly
       setExplanation(
         data.content || {
@@ -56,6 +64,22 @@ const ExplainThis = () => {
           limitations: [],
         },
       );
+
+      // create a input item object
+      const newItem = {
+        id: crypto.randomUUID,
+        text: input,
+        output: data.explanation,
+        createdAt: Date.now(),
+      };
+      // create an array that holds the newitem first, and all previous items
+      setSavedInput((prev) => {
+        const updatedList = [newItem, ...prev];
+        localStorage.setItem("savedInput", JSON.stringify(updatedList));
+        return updatedList;
+      });
+      // store
+
       // Store language
       setLanguage("text");
     } catch (err) {
