@@ -32,7 +32,7 @@ const Nav = ({ savedInput }) => {
                       isActive ? "saved-item active" : "saved-item"
                     }
                   >
-                    {item.text.length > 15
+                    {item.text.length > 25
                       ? item.text.slice(0, 15) + "..."
                       : item.text}
                   </NavLink>
