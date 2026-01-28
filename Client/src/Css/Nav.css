@@ -52,30 +52,40 @@ li {
   letter-spacing: 5px;
 }
 
-#link_wrapper{
+#link_wrapper {
   margin-top: 1rem;
 }
 
 a {
   color: white;
-  font-size: 0.8rem;
+  font-size: 1rem;
   text-decoration: none;
   text-shadow: 2px 2px 8px black;
   font-family: "Times New Roman", Times, serif;
-}
-a:hover {
-  cursor: pointer;
-  background-color: rgb(238, 9, 238);
-  border: 0.5px solid black;
+  position: relative;
   padding: 0.5rem 0.5rem;
-  box-shadow: 2px 2px 8px black;
+  text-decoration: none;
+ 
+  
+}
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: rgb(238, 9, 238);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
 }
 
-#top_list {
-  margin-top: 1rem;
-  color: white;
-  text-shadow: 2px 2px 8px black;
+a:hover::after {
+  transform: scaleX(1);
 }
+
+
 
 ul.open {
   height: 92vh;
