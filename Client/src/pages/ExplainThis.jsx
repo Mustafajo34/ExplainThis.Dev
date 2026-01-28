@@ -30,7 +30,11 @@ const ExplainThis = () => {
   });
   // useEffect onload render
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      setInput("");
+      setExplanation("");
+      return;
+    }
 
     const found = savedInput.find((item) => item.id === id);
     if (!found) return;

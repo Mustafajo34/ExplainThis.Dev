@@ -52,6 +52,10 @@ li {
   letter-spacing: 5px;
 }
 
+#link_wrapper{
+  margin-top: 1rem;
+}
+
 a {
   color: white;
   font-size: 0.8rem;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/pics/ExplainThis.png";
 import "../Css/Nav.css";
 
@@ -20,7 +20,11 @@ const Nav = ({ savedInput }) => {
           </span>
           {/* toggle state classname Open || Close */}
           <ul className={toggle ? "open" : "close"}>
-            <h3 id="top_list">New Chat</h3>
+            <div id="link_wrapper">
+              <Link to={"/"} id="top_list">
+                New Chat
+              </Link>
+            </div>
             {savedInput.length === 0 ? (
               <p>No new Chats</p>
             ) : (

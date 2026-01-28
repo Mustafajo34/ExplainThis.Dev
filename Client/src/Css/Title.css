@@ -1,6 +1,12 @@
 /* span wrapper felx column */
 .span_wrapper {
   display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 20rem;
+  left: .5rem;
   flex-direction: column;
   width: 100%;
   font-size: 2rem;
@@ -20,9 +26,7 @@
 #span1 {
   color: white;
   text-shadow: 2px 2px 8px black;
-  position: absolute;
-  top: -0.6rem;
-  left: 3rem;
+ 
   letter-spacing: 5px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
@@ -31,9 +35,7 @@
 #span2 {
   color: white;
   text-shadow: 2px 2px 8px black;
-  position: absolute;
-  top: 3rem;
-  left: 5rem;
+  
   letter-spacing: 5px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
@@ -42,10 +44,8 @@
 #span3 {
   color: white;
   text-shadow: 2px 2px 8px black;
-  position: absolute;
-  top: 7rem;
-  left: 4rem;
-  letter-spacing: 2px;
+ 
+  letter-spacing: 5px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
