@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // Component Imports
 import Nav from "../components/Nav.jsx";
@@ -18,15 +18,26 @@ const ExplainThis = () => {
   const [explanation, setExplanation] = useState("");
   const [language, setLanguage] = useState("");
   const [input, setInput] = useState("");
+  const { id } = useParams();
   // display Saved Input
   const [savedInput, setSavedInput] = useState(() => {
     try {
       const stored = localStorage.getItem("savedInput");
       return stored ? JSON.parse(stored) : [];
-    } catch (error) {
-      setError(error.message);
+    } catch {
+      return [];
     }
   });
+  // useEffect onload render
+  useEffect(() => {
+    if (!id) return;
+
+    const found = savedInput.find((item) => item.id === id);
+    if (!found) return;
+
+    setInput(found.text);
+    setExplanation(found.output);
+  }, [id, savedInput]);
 
   //  handleSubmit function
   const handleSubmit = async () => {
@@ -58,7 +69,7 @@ const ExplainThis = () => {
 
       // Use the backend content directly
       setExplanation(
-        data.content || {
+        data.explanation || {
           summary: "",
           breakdown: [],
           key_points: [],
@@ -68,7 +79,7 @@ const ExplainThis = () => {
 
       // create a input item object
       const newItem = {
-        id: crypto.randomUUID,
+        id: crypto.randomUUID(),
         text: input,
         output: data.explanation,
         createdAt: Date.now(),
@@ -79,8 +90,6 @@ const ExplainThis = () => {
         localStorage.setItem("savedInput", JSON.stringify(updatedList));
         return updatedList;
       });
-      // store
-
       // Store language
       setLanguage("text");
     } catch (err) {
@@ -96,7 +105,7 @@ const ExplainThis = () => {
     <div className="App">
       {/* nav components */}
       <nav>
-        <Nav input={input} />
+        <Nav savedInput={savedInput} />
       </nav>
       {/* header comnponent area */}
       <header>
