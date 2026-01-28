@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 // Component Imports
 import Nav from "../components/Nav.jsx";
 import Title from "../components/Title.jsx";
