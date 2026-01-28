@@ -51,12 +51,31 @@ li {
   font-size: 1.5rem;
   letter-spacing: 5px;
 }
+
+a {
+  color: white;
+  font-size: 0.8rem;
+  text-decoration: none;
+  text-shadow: 2px 2px 8px black;
+  font-family: "Times New Roman", Times, serif;
+}
+a:hover {
+  cursor: pointer;
+  background-color: rgb(238, 9, 238);
+  border: 0.5px solid black;
+  padding: 0.5rem 0.5rem;
+  box-shadow: 2px 2px 8px black;
+}
+
 #top_list {
   margin-top: 1rem;
+  color: white;
+  text-shadow: 2px 2px 8px black;
 }
 
 ul.open {
   height: 92vh;
+  padding: 0 0.5rem;
   max-width: 100%;
   width: 80vw;
   position: absolute;

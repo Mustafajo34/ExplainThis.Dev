@@ -69,7 +69,7 @@ const ExplainThis = () => {
 
       // Use the backend content directly
       setExplanation(
-        data.explanation || {
+        data.content || {
           summary: "",
           breakdown: [],
           key_points: [],
@@ -81,7 +81,7 @@ const ExplainThis = () => {
       const newItem = {
         id: crypto.randomUUID(),
         text: input,
-        output: data.explanation,
+        output: data.content,
         createdAt: Date.now(),
       };
       // create an array that holds the newitem first, and all previous items

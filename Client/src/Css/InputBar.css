@@ -29,7 +29,7 @@ form {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-transform: uppercase;
   text-shadow: 2px 2px 8px black;
-  background-color: purple;
+  background-color: rgb(238, 9, 238);
   color: white;
 }
 textarea::-webkit-scrollbar {
