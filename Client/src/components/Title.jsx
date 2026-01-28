@@ -9,7 +9,7 @@ const Title = () => {
     /* time variable that holds setTimeout() that changes state and returns unmounted SetTimeout */
     const timer = setTimeout(() => {
       setFadeOut(true);
-    }, 8000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 

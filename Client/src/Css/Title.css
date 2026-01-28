@@ -6,7 +6,7 @@
   justify-content: center;
   position: fixed;
   top: 20rem;
-  left: .5rem;
+  left: 0.5rem;
   flex-direction: column;
   width: 100%;
   font-size: 2rem;
@@ -26,26 +26,71 @@
 #span1 {
   color: white;
   text-shadow: 2px 2px 8px black;
- 
+
   letter-spacing: 5px;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
 }
 /* span to */
 #span2 {
   color: white;
   text-shadow: 2px 2px 8px black;
-  
+
   letter-spacing: 5px;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
 }
 /* span ExplainThis.Dev */
 #span3 {
   color: white;
   text-shadow: 2px 2px 8px black;
- 
+
   letter-spacing: 5px;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
+}
+@media screen and (min-width: 1200px) {
+  
+  .span_wrapper {
+  
+  position: fixed;
+  top: 15rem;
+  left: 0.5rem;
+  
+}
+  
+  #span1 {
+  color: white;
+  text-shadow: 2px 2px 8px black;
+    font-size: 5rem;
+    letter-spacing: 5px;
+    font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
+  }
+  /* span to */
+  #span2 {
+    color: white;
+    text-shadow: 2px 2px 8px black;
+    
+    font-size: 5rem;
+    letter-spacing: 5px;
+    font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
+  }
+  /* span ExplainThis.Dev */
+  #span3 {
+    color: white;
+    text-shadow: 2px 2px 8px black;
+    font-size: 5rem;
+
+  letter-spacing: 5px;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
+}
 }
