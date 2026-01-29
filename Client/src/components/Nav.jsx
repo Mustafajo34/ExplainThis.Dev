@@ -21,13 +21,16 @@ const Nav = ({ savedInput }) => {
           {/* toggle state classname Open || Close */}
           <ul className={toggle ? "open" : "close"}>
             <div id="link_wrapper">
+              {/* link to create new chat */}
               <Link to={"/"} id="top_list">
                 New Chat
               </Link>
             </div>
+            {/* savedInput disclaimer if no chats */}
             {savedInput.length === 0 ? (
               <p>No new Chats</p>
             ) : (
+              /* list saveInput using navLink to dynamically link through id */
               savedInput.map((item) => (
                 <li key={item.id}>
                   <NavLink

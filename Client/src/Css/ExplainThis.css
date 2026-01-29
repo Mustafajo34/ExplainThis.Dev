@@ -50,6 +50,8 @@ main {
   color: white;
   text-shadow: 2px 2px 8px black;
   font-size: 1rem;
+  position: absolute;
+  top: 20rem;
 }
 
 .error {
@@ -271,7 +273,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-
+    
     width: 100%;
     max-width: 90vw;
 

@@ -49,7 +49,7 @@ li {
   color: white;
   text-align: center;
   font-size: 1.5rem;
-  letter-spacing: 5px;
+  letter-spacing: 3px;
 }
 
 #link_wrapper {
@@ -85,6 +85,10 @@ a:hover::after {
   transform: scaleX(1);
 }
 
+a.active::after {
+  transform: scaleX(1);
+}
+
 
 
 ul.open {
@@ -95,7 +99,7 @@ ul.open {
   position: absolute;
   top: 4.69rem;
   left: -0.1rem;
-
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
 
@@ -105,6 +109,19 @@ ul.open {
   /* 🔹 animation end state */
   opacity: 1;
   transform: translateX(0);
+}
+/* Scrollbar (WebKit) */
+ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+ul::-webkit-scrollbar-thumb {
+  background-color: rgba(235, 13, 216, 0.5);
+  border-radius: 4px;
+}
+
+ul::-webkit-scrollbar-track {
+  background-color: #1a191a;
 }
 
 ul.close {

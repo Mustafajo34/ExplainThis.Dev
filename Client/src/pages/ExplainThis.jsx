@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // Component Imports
 import Nav from "../components/Nav.jsx";
-import Title from "../components/Title.jsx";
+
 import InputBar from "../components/InputBar";
 // Package Imports
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -30,11 +30,7 @@ const ExplainThis = () => {
   });
   // useEffect onload render
   useEffect(() => {
-    if (!id) {
-      setInput("");
-      setExplanation("");
-      return;
-    }
+    if (!id) return;
 
     const found = savedInput.find((item) => item.id === id);
     if (!found) return;
@@ -96,6 +92,7 @@ const ExplainThis = () => {
       });
       // Store language
       setLanguage("text");
+      setInput("");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -113,7 +110,7 @@ const ExplainThis = () => {
       </nav>
       {/* header comnponent area */}
       <header>
-        <Title />
+        
       </header>
       {/* main component area */}
       <main>
