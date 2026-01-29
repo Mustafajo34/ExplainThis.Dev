@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/pics/ExplainThis.png";
 import "../Css/Nav.css";
 
 const Nav = ({ savedInput }) => {
   const [toggle, setToggle] = useState(false);
+  const navigate = useNavigate();
   // toggle function hangling true false value for open close action
   const handleToggle = () => {
     setToggle((prev) => !prev);
@@ -22,9 +23,7 @@ const Nav = ({ savedInput }) => {
           <ul className={toggle ? "open" : "close"}>
             <div id="link_wrapper">
               {/* link to create new chat */}
-              <Link to={"/"} id="top_list">
-                New Chat
-              </Link>
+              <span>New Chat</span>
             </div>
             {/* savedInput disclaimer if no chats */}
             {savedInput.length === 0 ? (

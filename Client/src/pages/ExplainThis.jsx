@@ -91,13 +91,13 @@ const ExplainThis = () => {
         return updatedList;
       });
       // Store language
-      setLanguage("text");
+      
       setInput("");
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
-      setInput("");
+      
     }
   };
   // Handle download of explanation as .txt
