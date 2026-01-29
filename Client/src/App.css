@@ -1,2 +1,293 @@
+body {
+  min-height: 100vh;
+  background: linear-gradient(155deg, purple, black);
+}
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+.App {
+  min-height: 100vh;
+  background: linear-gradient(155deg, purple, black);
+}
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15vh;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  top: 7rem;
+}
+
+/* 
+   Main Layout
+ */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 5rem;
+  width: 100%;
+  height: 75vh;
+
+  padding: 1rem;
+  box-sizing: border-box;
+
+  /* REQUIRED */
+  overflow: hidden;
+}
+
+/* Loading & Error */
+.loading,
+.error {
+  flex-shrink: 0;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.loading {
+  color: white;
+  text-shadow: 2px 2px 8px black;
+  font-size: 1rem;
+  position: absolute;
+  top: 20rem;
+}
+
+.error {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+/* 
+   Explanation Output
+ */
+.explanation-output {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  width: 100%;
+  max-width: 900px;
+  border-radius: 12px;
+  padding: 1rem;
+
+  /* Flex + text safety */
+  min-width: 0;
+
+  /* Scroll container */
+  flex: 1 1 auto;
+  max-height: 100%;
+  overflow-y: auto;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Scrollbar (WebKit) */
+.explanation-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.explanation-output::-webkit-scrollbar-thumb {
+  background-color: rgba(235, 13, 216, 0.5);
+  border-radius: 4px;
+}
+
+.explanation-output::-webkit-scrollbar-track {
+  background-color: #1a191a;
+}
+
+/* 
+   🔥 HARD TYPOGRAPHY RESET
+   (Fixes stacked / spaced text)
+ */
+.explanation-output,
+.explanation-output * {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif !important;
+
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-transform: none !important;
+
+  line-height: 1.6 !important;
+  white-space: normal !important;
+
+  font-kerning: normal !important;
+  font-feature-settings: normal !important;
+}
+
+/* Explicit element reset */
+.explanation-output p,
+.explanation-output li,
+.explanation-output h3,
+.explanation-output h4 {
+  margin: 0;
+  padding: 0;
+  display: block;
+
+  letter-spacing: normal !important;
+  line-height: 1.6 !important;
+}
+
+/* 
+   Language Label
+ */
+.language-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #555;
+}
+
+/* 
+   Section Cards
+ */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border-left: 5px solid #e20de2;
+
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+
+  min-width: 0;
+}
+
+/* 
+   Section Titles
+ */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 
+   Paragraph Text
+ */
+.section-text {
+  font-size: 0.95rem;
+  color: #444;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* 
+   Lists
+ */
+.section-list {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.section-list li {
+  color: #555;
+  margin-bottom: 0.4rem;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 
+   Optional: Code Safety
+ */
+pre,
+code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+/* 
+   Responsive Tweaks
+ */
+@media (min-width: 768px) {
+  main {
+    padding: 2rem;
+  }
+
+  .explanation-output {
+    padding: 2rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .section-text,
+  .section-list li {
+    font-size: 1rem;
+  }
+
+  .language-label {
+    font-size: 0.5rem;
+  }
+}
+
+/* footer */
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 3rem;
+  width: 100%;
+  height: 10vh;
+}
+@media (min-width: 1200px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 5rem;
+    left: 0;
+    right: 0;
+    width: 100%;
+
+    /* REQUIRED */
+    overflow: hidden;
+  }
+
+  .explanation-output {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    
+    width: 100%;
+    max-width: 90vw;
+
+    border-radius: 12px;
+    padding: 1rem;
+
+    /* Flex + text safety */
+    min-width: 0;
+
+    /* Scroll container */
+  }
+}

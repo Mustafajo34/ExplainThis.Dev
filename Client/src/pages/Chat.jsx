@@ -1,14 +1,9 @@
-import { useState, useEffect } from "react";
+import React from 'react'
 
-// Component Imports
-
-// Css imports
-import "../Css/ExplainThis.css";
-
-const ExplainThis = ({ loading, error, explanation }) => {
+const Chat = ({explanation, loading, error}) => {
   return (
-    <div className="explain-container">
-      <main>
+    <div>
+       <main>
         {/* loading sign */}
         {loading && <p className="loading">Generating your explanation...</p>}
         {/* error notify if loading unsuccessful */}
@@ -53,8 +48,9 @@ const ExplainThis = ({ loading, error, explanation }) => {
           </section>
         )}
       </main>
+      
     </div>
-  );
-};
+  )
+}
 
-export default ExplainThis;
+export default Chat

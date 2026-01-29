@@ -13,6 +13,12 @@ nav {
   left: 0;
   right: 0;
 }
+
+.nav-header{
+  display: flex;
+  justify-content: space-between;
+}
+
 /* hamburger sign in nav positioning */
 #hamburger_sign {
   position: fixed;
@@ -26,6 +32,8 @@ nav {
 }
 /* nav logo sign and positioning */
 .nav-logo {
+  position: fixed;
+  right:1rem;
   border-radius: 5rem;
   height: 60px;
   margin-top: 0.25rem;
