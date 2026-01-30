@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/pics/ExplainThis.png";
+
 import "../Css/Nav.css";
 
-const Nav = ({ savedInput, setInput }) => {
+const Nav = ({ onNewChat, onDelete, savedInput, setInput }) => {
   const [toggle, setToggle] = useState(false);
 
   const handleToggle = () => setToggle((prev) => !prev);
+
   const handleLinkClick = () => {
     setToggle(false);
-    if (setInput) setInput(""); // reset input when navigating
+    if (setInput) setInput("");
   };
 
   return (
@@ -26,8 +28,8 @@ const Nav = ({ savedInput, setInput }) => {
           <Link
             to="/new"
             onClick={() => {
-              handleLinkClick(); // existing toggle + optional input reset
-              if (onNewChat) onNewChat(); // reset state & navigate
+              handleLinkClick();
+              onNewChat?.();
             }}
           >
             New Chat
@@ -39,17 +41,29 @@ const Nav = ({ savedInput, setInput }) => {
         ) : (
           savedInput.map((item) => (
             <li key={item.id}>
-              <NavLink
-                to={`/item/${item.id}`}
-                className={({ isActive }) =>
-                  isActive ? "saved-item active" : "saved-item"
-                }
-                onClick={handleLinkClick}
-              >
-                {item.text.length > 25
-                  ? item.text.slice(0, 25) + "..."
-                  : item.text}
-              </NavLink>
+              <div className="map_wrapper">
+                <NavLink
+                  to={`/item/${item.id}`}
+                  className={({ isActive }) =>
+                    isActive ? "saved-item active" : "saved-item"
+                  }
+                  onClick={handleLinkClick}
+                >
+                  {item.text?.length > 25
+                    ? item.text.slice(0, 20) + "..."
+                    : item.text}
+                </NavLink>
+
+                <span
+                  id="delete_symbol"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(item.id);
+                  }}
+                >
+                  ✕
+                </span>
+              </div>
             </li>
           ))
         )}

@@ -10,32 +10,39 @@ import "./App.css";
 import Chat from "./pages/Chat";
 
 function App() {
-  // --- App State ---
+  //? --- App State ---
   const navigate = useNavigate();
 
-  // Input and output states
   const [input, setInput] = useState("");
   const [explanation, setExplanation] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Load saved items from localStorage
   const [savedInput, setSavedInput] = useState(() => {
     try {
-      const stored = localStorage.getItem("savedInput");
-      return stored ? JSON.parse(stored) : [];
+      const stored = JSON.parse(localStorage.getItem("savedInput")) || [];
+      return stored.map((item) => ({
+        ...item,
+        id: item.id ?? crypto.randomUUID(),
+      }));
     } catch {
       return [];
     }
   });
-  const handleNewChat = () => {
-    setExplanation(null); // Clear previous explanation
-    setInput(""); // Clear input
-    setError(""); // Clear error
-    setLoading(false); // Reset loading state
-    navigate("/new"); // Navigate to Chat page
+
+  const handleDelete = (idToDelete) => {
+    const updated = savedInput.filter((item) => item.id !== idToDelete);
+    setSavedInput(updated);
+    localStorage.setItem("savedInput", JSON.stringify(updated));
   };
-  // handleSubmit function
+
+  const handleNewChat = () => {
+    setExplanation(null);
+    setInput("");
+    setError("");
+    setLoading(false);
+    navigate("/new");
+  };
 
   const handleSubmit = async () => {
     if (!input.trim()) return;
@@ -45,9 +52,7 @@ function App() {
     setExplanation(null);
 
     try {
-      const api = "http://localhost:4189/api/python";
-
-      const response = await fetch(api, {
+      const response = await fetch("http://localhost:4189/api/python", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input }),
@@ -60,16 +65,8 @@ function App() {
 
       const data = await response.json();
 
-      setExplanation(
-        data.content || {
-          summary: "",
-          breakdown: [],
-          key_points: [],
-          limitations: [],
-        },
-      );
+      setExplanation(data.content);
 
-      // Save new input/output to localStorage
       const newItem = {
         id: crypto.randomUUID(),
         text: input,
@@ -77,19 +74,17 @@ function App() {
         createdAt: Date.now(),
       };
 
-      const updatedList = [newItem, ...savedInput];
-      setSavedInput(updatedList);
-      localStorage.setItem("savedInput", JSON.stringify(updatedList));
+      const updated = [newItem, ...savedInput];
+      setSavedInput(updated);
+      localStorage.setItem("savedInput", JSON.stringify(updated));
 
-      setInput(""); // Clear input after submission
+      setInput("");
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
-
-  // Component for /item/:id route
 
   const ExplainSavedItem = () => {
     const { id } = useParams();
@@ -100,14 +95,15 @@ function App() {
     return <ExplainThis explanation={item.output} loading={false} error="" />;
   };
 
-  // JSX
-
   return (
     <div className="App">
-      {/* Navigation */}
-      <Nav savedInput={savedInput} setInput={setInput} onNewChat={handleNewChat} />
+      <Nav
+        savedInput={savedInput}
+        setInput={setInput}
+        onNewChat={handleNewChat}
+        onDelete={handleDelete}
+      />
 
-      {/* Routes */}
       <Routes>
         <Route
           path="/"
@@ -128,7 +124,6 @@ function App() {
         <Route path="/item/:id" element={<ExplainSavedItem />} />
       </Routes>
 
-      {/* InputBar */}
       <footer>
         <InputBar value={input} onChange={setInput} onSubmit={handleSubmit} />
       </footer>

@@ -14,7 +14,7 @@ nav {
   right: 0;
 }
 
-.nav-header{
+.nav-header {
   display: flex;
   justify-content: space-between;
 }
@@ -30,10 +30,15 @@ nav {
 #hamburger_sign:hover {
   cursor: pointer;
 }
+
+.no-chats {
+  color: white;
+  letter-spacing: 5px;
+}
 /* nav logo sign and positioning */
 .nav-logo {
   position: fixed;
-  right:1rem;
+  right: 1rem;
   border-radius: 5rem;
   height: 60px;
   margin-top: 0.25rem;
@@ -72,9 +77,6 @@ a {
   font-family: "Times New Roman", Times, serif;
   position: relative;
   padding: 0.5rem 0.5rem;
-  text-decoration: none;
- 
-  
 }
 a::after {
   content: "";
@@ -96,8 +98,6 @@ a:hover::after {
 a.active::after {
   transform: scaleX(1);
 }
-
-
 
 ul.open {
   height: 92vh;
@@ -152,10 +152,18 @@ ul.close {
   pointer-events: none;
 }
 
-span{
-  color: white;
-  font-size: 2rem;
-  letter-spacing: 5px;
+.map_wrapper {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+}
+
+#delete_symbol {
+  color: violet;
+}
+
+#delete_symbol:hover {
+  cursor: pointer;
 }
 
 @media screen and (min-width: 1300px) {
