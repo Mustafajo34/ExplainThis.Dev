@@ -212,7 +212,7 @@ ul::-webkit-scrollbar-track {
   ul.close {
     width: 100%;
     max-width: 45vw;
-    top: 5.2rem;
+    top: 5.1rem;
   }
 
   #hamburger_sign {
@@ -295,6 +295,17 @@ ul::-webkit-scrollbar-track {
     top: 8.5rem;
   }
 
+  a {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  text-shadow: 2px 2px 8px black;
+  font-family: "Times New Roman", Times, serif;
+  position: relative;
+  padding: 0.5rem 0.5rem;
+}
+
+
   #hamburger_sign {
     font-size: 3rem;
     top: 2rem;
@@ -318,6 +329,7 @@ ul::-webkit-scrollbar-track {
     font-size: 1.5rem;
     margin-top: 1rem;
     letter-spacing: 5px;
+    margin-bottom: 2rem;
   }
   #link_wrapper > a {
     font-size: 1.5rem;
