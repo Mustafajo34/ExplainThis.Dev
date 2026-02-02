@@ -27,6 +27,7 @@ const Nav = ({ onNewChat, onDelete, savedInput, setInput }) => {
         <div id="link_wrapper">
           <Link
             to="/new"
+            id="link_text"
             onClick={() => {
               handleLinkClick();
               onNewChat?.();

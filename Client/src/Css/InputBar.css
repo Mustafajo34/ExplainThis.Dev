@@ -67,12 +67,21 @@ textarea::-webkit-scrollbar-track {
   cursor: pointer;
 }
 
-@media screen and (min-width: 1300px) {
+@media screen and (min-width: 375px) and (max-width: 375px) {
   #textArea_bar {
-    width: 30rem;
+    width: 20rem;
   }
   /* submit button */
   #submit_question {
-    width: 30rem;
+    width: 20rem;
+  }
+}
+@media screen and (min-width: 344px) and (max-width: 344px) {
+  #textArea_bar {
+    width: 20rem;
+  }
+  /* submit button */
+  #submit_question {
+    width: 20rem;
   }
 }
