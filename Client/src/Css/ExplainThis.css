@@ -1,0 +1,19 @@
+.loading,
+.error {
+  flex-shrink: 0;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.loading {
+  color: white;
+  text-shadow: 2px 2px 8px black;
+  font-size: 1rem;
+  position: absolute;
+  top: 20rem;
+}
+
+.error {
+  color: #e74c3c;
+  font-weight: 500;
+}

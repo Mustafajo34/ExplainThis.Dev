@@ -1,9 +1,12 @@
 import React from 'react'
-
+import Title from '../components/Title'
 const Chat = ({explanation, loading, error}) => {
   return (
     <div>
        <main>
+        <div className='new-chat' >
+          <Title/>
+        </div>
         {/* loading sign */}
         {loading && <p className="loading">Generating your explanation...</p>}
         {/* error notify if loading unsuccessful */}
