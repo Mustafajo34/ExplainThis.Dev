@@ -56,8 +56,8 @@ const Nav = ({ onNewChat, onDelete, savedInput, setInput, dailyCapReached }) => 
                   }
                   onClick={handleLinkClick}
                 >
-                  {item.text?.length > 25
-                    ? item.text.slice(0, 20) + "..."
+                  {item.text?.length > 15
+                    ? item.text.slice(0, 15) + "..."
                     : item.text}
                 </NavLink>
 

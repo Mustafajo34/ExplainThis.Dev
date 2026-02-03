@@ -8,28 +8,48 @@ import Nav from "./components/Nav";
 import "./App.css";
 
 import Chat from "./pages/Chat";
-// --- Config ---
-const HARD_CAP = 3;         // submissions allowed per cycle
-const COOLDOWN_MS = 60 * 1000; // 1-minute lock after hitting HARD_CAP
 
-// --- LocalStorage helpers ---
+
+// --- Config ---
+const HARD_CAP = 3;
+const COOLDOWN_MS = 60 * 1000; // 1 minute
+
+// --- Helpers ---
 function getTodayKey() {
   return new Date().toISOString().slice(0, 10);
 }
 
 function getRequestCount() {
-  const key = `requestCount-${getTodayKey()}`;
-  return parseInt(localStorage.getItem(key) || "0", 10);
+  return parseInt(
+    localStorage.getItem(`requestCount-${getTodayKey()}`) || "0",
+    10
+  );
 }
 
-function registerRequest() {
+function incrementRequestCount() {
   const key = `requestCount-${getTodayKey()}`;
-  const current = getRequestCount();
-  localStorage.setItem(key, current + 1);
+  localStorage.setItem(key, getRequestCount() + 1);
+}
+
+function getLockUntil() {
+  return parseInt(localStorage.getItem("lockUntil") || "0", 10);
+}
+
+function startCooldown() {
+  localStorage.setItem("lockUntil", Date.now() + COOLDOWN_MS);
+}
+
+function isLocked() {
+  return Date.now() < getLockUntil();
+}
+
+function clearCooldown() {
+  localStorage.removeItem("lockUntil");
+  localStorage.removeItem(`requestCount-${getTodayKey()}`);
 }
 
 function App() {
-  const navigate = useNavigate();
+   const navigate = useNavigate();
 
   // --- State ---
   const [input, setInput] = useState("");
@@ -49,14 +69,19 @@ function App() {
     }
   });
 
-  // --- Cooldown lock state ---
-  const [lockTimer, setLockTimer] = useState(0);
+  // --- Lock state ---
+  const [lockTimer, setLockTimer] = useState(() => {
+    const remaining = Math.ceil((getLockUntil() - Date.now()) / 1000);
+    return remaining > 0 ? remaining : 0;
+  });
+
   const intervalRef = useRef(null);
 
-  // Countdown timer for lock
+  // --- Countdown ---
   useEffect(() => {
     if (lockTimer <= 0) {
       clearInterval(intervalRef.current);
+      clearCooldown();
       return;
     }
 
@@ -64,8 +89,7 @@ function App() {
       setLockTimer((prev) => {
         if (prev <= 1) {
           clearInterval(intervalRef.current);
-          // Reset daily count automatically after cooldown
-          localStorage.setItem(`requestCount-${getTodayKey()}`, "0");
+          clearCooldown();
           return 0;
         }
         return prev - 1;
@@ -90,64 +114,61 @@ function App() {
     navigate("/new");
   };
 
- const handleSubmit = async () => {
-  if (!input.trim()) return;
+  const handleSubmit = async () => {
+    if (!input.trim()) return;
 
-  // If lock is active, prevent submission
-  if (lockTimer > 0) {
-    setError(`Daily limit reached. Please wait ${lockTimer} second${lockTimer > 1 ? "s" : ""}.`);
-    return;
-  }
-
-  setLoading(true);
-  setError("");
-  setExplanation(null);
-
-  try {
-    const response = await fetch("http://localhost:4189/api/python", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ input }),
-    });
-
-    if (!response.ok) {
-      const errData = await response.json();
-      throw new Error(errData.error || "Unable to retrieve data");
+    // 🔒 Block only if cooldown is active
+    if (isLocked()) {
+      setError(`Daily limit reached. Please wait ${lockTimer}s.`);
+      return;
     }
 
-    const data = await response.json();
-    setExplanation(data.content);
-
-    // Save input/output
-    const newItem = {
-      id: crypto.randomUUID(),
-      text: input,
-      output: data.content,
-      createdAt: Date.now(),
-    };
-
-    const updated = [newItem, ...savedInput];
-    setSavedInput(updated);
-    localStorage.setItem("savedInput", JSON.stringify(updated));
-
-    // Register submission
-    registerRequest();
-
-    // Get updated count AFTER this submission
-    const currentCount = getRequestCount();
-
-    // Only start lock if we've **exactly reached HARD_CAP**
-    if (currentCount === HARD_CAP) {
+    // ✅ Allow submits freely until HARD_CAP
+    if (getRequestCount() >= HARD_CAP) {
+      startCooldown();
       setLockTimer(COOLDOWN_MS / 1000);
+      setError("Daily limit reached. Cooldown started.");
+      return;
     }
 
-    setInput("");
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    setError("");
+    setExplanation(null);
+
+    try {
+      const response = await fetch("http://localhost:4189/api/python", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || "Unable to retrieve data");
+      }
+
+      const data = await response.json();
+      setExplanation(data.content);
+
+      const newItem = {
+        id: crypto.randomUUID(),
+        text: input,
+        output: data.content,
+        createdAt: Date.now(),
+      };
+
+      const updated = [newItem, ...savedInput];
+      setSavedInput(updated);
+      localStorage.setItem("savedInput", JSON.stringify(updated));
+
+      incrementRequestCount();
+      setInput("");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const ExplainSavedItem = () => {
     const { id } = useParams();
@@ -163,25 +184,17 @@ function App() {
         setInput={setInput}
         onNewChat={handleNewChat}
         onDelete={handleDelete}
-        dailyCapReached={lockTimer > 0} // only lock input during cooldown
+        dailyCapReached={lockTimer > 0}
       />
 
       <Routes>
         <Route
           path="/"
-          element={
-            <ExplainThis
-              explanation={explanation}
-              loading={loading}
-              error={error}
-            />
-          }
+          element={<ExplainThis explanation={explanation} loading={loading} error={error} />}
         />
         <Route
           path="/new"
-          element={
-            <Chat explanation={explanation} loading={loading} error={error} />
-          }
+          element={<Chat explanation={explanation} loading={loading} error={error} />}
         />
         <Route path="/item/:id" element={<ExplainSavedItem />} />
       </Routes>
@@ -191,8 +204,8 @@ function App() {
           value={input}
           onChange={setInput}
           onSubmit={handleSubmit}
-          dailyCapReached={lockTimer > 0} // disable only during cooldown
-          lockTimer={lockTimer} // show countdown
+          dailyCapReached={lockTimer > 0}
+          lockTimer={lockTimer}
         />
       </footer>
     </div>
