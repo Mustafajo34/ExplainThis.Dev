@@ -205,7 +205,7 @@ main {
 }
 
 .section-list li {
-  color: #555;
+  color: black;
   margin-bottom: 0.4rem;
 
   overflow-wrap: break-word;
@@ -226,7 +226,6 @@ code {
    Responsive Tweaks
  */
 
-
 /* footer */
 footer {
   display: flex;
@@ -242,8 +241,8 @@ footer {
 @media screen and (min-width: 344px) and (max-width: 344px) {
   main {
     height: 74vh;
-    margin-top: -.1rem;
-    padding: .5rem;
+    margin-top: -0.1rem;
+    padding: 0.5rem;
   }
 
   .explanation-output {
@@ -255,34 +254,36 @@ footer {
   }
 
   .section-text {
-    font-size: 1rem;
-    
+    font-size: 0.8rem;
   }
   .section-list {
-    font-size: 1rem;
-    
+    font-size: 0.8rem;
   }
 
   .language-label {
     font-size: 0.5rem;
   }
-
 }
 
 /* ---------------- MEDIA QUERIES ---------------- */
 @media screen and (min-width: 375px) and (max-width: 375px) {
-   main {
-    height: 75vh;
+  main {
+    height: 73vh;
     margin-top: -1.8rem;
     padding: 1rem;
   }
 
-   
+  .section-text {
+    font-size: 0.8rem;
+  }
+  .section-list {
+    font-size: 0.8rem;
+  }
 }
 
 /* TABLETS 1 */
 @media screen and (min-width: 768px) and (max-width: 768px) {
- main {
+  main {
     padding: 2rem;
   }
 
@@ -305,13 +306,10 @@ footer {
 }
 /* TABLET 2 */
 @media screen and (min-width: 820px) and (max-width: 820px) {
- main {
-     
+  main {
     height: 75vh;
     margin-top: 1rem;
     padding: 2rem;
- 
-    
   }
 
   .explanation-output {
@@ -326,9 +324,8 @@ footer {
     font-size: 1.5rem;
   }
 
-   .section-list {
+  .section-list {
     font-size: 1.5rem;
-    
   }
 
   .language-label {
@@ -338,9 +335,7 @@ footer {
 
 /* Laptops MINI SCREEN */
 @media screen and (min-width: 920px) and (max-width: 1023px) {
- 
-  }
-
+}
 
 /* lAPTOPS LARGE SCREEN */
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
@@ -358,14 +353,12 @@ footer {
     font-size: 2rem;
   }
 
-  .section-text
-   {
+  .section-text {
     font-size: 1.5rem;
   }
 
-   .section-list {
+  .section-list {
     font-size: 1.5rem;
-    
   }
 
   .language-label {
@@ -392,7 +385,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    
+
     width: 100%;
     max-width: 90vw;
 
