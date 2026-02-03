@@ -63,7 +63,7 @@ textarea:disabled {
 button:disabled {
   background-color: #ccc;
   color: #666;
-  cursor: not-allowed;
+  cursor: none;
 }
 /* Countdown / lock message */
 .lock-message {
