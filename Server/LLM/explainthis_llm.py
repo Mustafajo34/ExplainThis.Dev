@@ -7,9 +7,9 @@ import os
 from openai import OpenAI
 
 
-# -------------------------
+
 # Load environment
-# -------------------------
+
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
@@ -32,9 +32,9 @@ if not OPENAI_API_KEY:
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-# -------------------------
+
 # Week-2 System Prompt (LOCKED)
-# -------------------------
+
 SYSTEM_PROMPT = """
 You are an AI coding explanation engine.
 
@@ -66,9 +66,9 @@ You MUST return JSON ONLY in this exact schema:
 }
 """
 
-# -------------------------
+
 # Limits and rate limiting
-# -------------------------
+
 MAX_INPUT_CHARS = 2500
 MAX_INPUT_LINES = 150
 MAX_OUTPUT_TOKENS = 1000
@@ -76,9 +76,9 @@ RATE_LIMIT = 5
 RATE_WINDOW = 60  # seconds
 requests_by_ip = defaultdict(list)
 
-# -------------------------
+
 # Static disclaimer
-# -------------------------
+
 STATIC_DISCLAIMER = [
     "This explanation is for educational purposes only.",
     "This API does not execute code.",
@@ -86,9 +86,9 @@ STATIC_DISCLAIMER = [
 ]
 
 
-# -------------------------
+
 # Helper: safe JSON parser
-# -------------------------
+
 def safe_json_loads(raw):
     try:
         return json.loads(raw)
@@ -105,9 +105,9 @@ def safe_json_loads(raw):
         }
 
 
-# -------------------------
+
 # Rate limiting check per client_id (IP)
-# -------------------------
+
 def rate_limited(client_id: str):
     now = time.time()
     window_start = now - RATE_WINDOW
@@ -120,9 +120,9 @@ def rate_limited(client_id: str):
     return False
 
 
-# -------------------------
+
 # LLM explanation function
-# -------------------------
+
 def explain_input(user_input: str, client_id="local") -> dict:
     user_input = user_input.strip()
     print(f"DEBUG_INPUT ({client_id}): {user_input}", file=sys.stderr)
@@ -228,9 +228,9 @@ def explain_input(user_input: str, client_id="local") -> dict:
         }
 
 
-# -------------------------
+
 # Entry point
-# -------------------------
+
 def main():
     user_input = sys.stdin.read()
     client_id = os.getenv("CLIENT_ID", "local")  # can be IP or unique user id
