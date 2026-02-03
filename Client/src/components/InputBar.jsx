@@ -1,47 +1,37 @@
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
-import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
+
 import "../Css/InputBar.css";
 
-const InputBar = ({value, onChange, onSubmit}) => {
-  
-  return (
+const InputBar = ({value, onChange, onSubmit, dailyCapReached, lockTimer}) => {
+ return (
     <div className="input_wrapper">
-      {/* Fontawesome Icons single icon */}
-      {/* <FontAwesomeIcon
-        icon={faImage}
-        id="image_icon"
-        size="xl"
-        style={{ color: "#777879" }}
-      />
-      <FontAwesomeIcon
-        icon={faMicrophone}
-        id="mic_icon"
-        size="xl"
-        style={{ color: "#858585" }}
-      /> */}
-      {/* form for textarea input */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onSubmit()
+          onSubmit();
         }}
       >
         <textarea
-          name=""
           id="textArea_bar"
           placeholder="How May I Help You..."
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          disabled={dailyCapReached} // disable input if cooldown active
         ></textarea>
-        {/* submit button */}
-        <button type="submit" id="submit_question">
+
+        {lockTimer > 0 && (
+          <p className="lock-message">
+            Please wait {lockTimer} second{lockTimer > 1 ? "s" : ""} before submitting.
+          </p>
+        )}
+
+        <button type="submit" id="submit_question" disabled={dailyCapReached}>
           Let's Code
         </button>
       </form>
     </div>
   );
+    
 };
 
 export default InputBar;

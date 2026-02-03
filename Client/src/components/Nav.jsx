@@ -4,8 +4,8 @@ import logo from "../assets/pics/ExplainThis.png";
 
 import "../Css/Nav.css";
 
-const Nav = ({ onNewChat, onDelete, savedInput, setInput }) => {
-  const [toggle, setToggle] = useState(false);
+const Nav = ({ onNewChat, onDelete, savedInput, setInput, dailyCapReached }) => {
+   const [toggle, setToggle] = useState(false);
 
   const handleToggle = () => setToggle((prev) => !prev);
 
@@ -28,7 +28,13 @@ const Nav = ({ onNewChat, onDelete, savedInput, setInput }) => {
           <Link
             to="/new"
             id="link_text"
-            onClick={() => {
+            className={dailyCapReached ? "disabled-link" : ""}
+            onClick={(e) => {
+              if (dailyCapReached) {
+                e.preventDefault(); // prevent navigation if cap hit
+                alert("Daily limit reached. Try again tomorrow.");
+                return;
+              }
               handleLinkClick();
               onNewChat?.();
             }}

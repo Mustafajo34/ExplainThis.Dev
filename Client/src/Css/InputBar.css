@@ -49,22 +49,41 @@ textarea::-webkit-scrollbar-track {
   cursor: pointer;
 }
 
-/* Icons */
-#image_icon {
-  position: absolute;
-  bottom: 3.9rem;
-  left: 2rem;
+.disabled-link {
+  opacity: 0.5;           /* faded look */
+  pointer-events: none;    /* prevents clicks */
+  cursor: not-allowed;     /* shows “not-allowed” cursor */
 }
-#image_icon:hover {
-  cursor: pointer;
+
+textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
-#mic_icon {
-  position: absolute;
-  bottom: 3.9rem;
-  right: 2rem;
+
+button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
-#mic_icon:hover {
-  cursor: pointer;
+/* Countdown / lock message */
+.lock-message {
+  color: #d9534f; /* red for attention */
+  font-weight: bold;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  text-align: center;
+  background-color: #fff3f3;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  padding: 5px 10px;
+  animation: pulse 1.2s infinite;
+}
+
+/* Optional: subtle pulse animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
 }
 
 @media screen and (min-width: 344px) and (max-width: 344px) {

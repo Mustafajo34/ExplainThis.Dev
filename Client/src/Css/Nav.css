@@ -14,6 +14,17 @@ nav {
   left: 0;
   z-index: 100;
 }
+/* Nav link disabled */
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* InputBar button disabled */
+.disabled-button {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* Hamburger icon */
 #hamburger_sign {
