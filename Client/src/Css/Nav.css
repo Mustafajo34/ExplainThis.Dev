@@ -134,6 +134,11 @@ ul::-webkit-scrollbar-track {
   letter-spacing: 5px;
 }
 
+#delete_symbol{
+cursor: pointer;
+font-size: 1rem;
+margin-left: 2rem;
+}
 #delete_symbol:hover{
 cursor: pointer;
 }
