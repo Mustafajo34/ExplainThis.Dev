@@ -11,6 +11,7 @@ const InputBar = ({value, onChange, onSubmit, dailyCapReached, lockTimer}) => {
           onSubmit();
         }}
       >
+        {/* text area */}
         <textarea
           id="textArea_bar"
           placeholder="How May I Help You..."
@@ -18,13 +19,13 @@ const InputBar = ({value, onChange, onSubmit, dailyCapReached, lockTimer}) => {
           onChange={(e) => onChange(e.target.value)}
           disabled={dailyCapReached} // disable input if cooldown active
         ></textarea>
-
+        {/* lock timer implementation */}
         {lockTimer > 0 && (
           <p className="lock-message">
             Please wait {lockTimer} second{lockTimer > 1 ? "s" : ""} before submitting.
           </p>
         )}
-
+        {/* Submit button */}
         <button type="submit" id="submit_question" disabled={dailyCapReached}>
           Let's Code
         </button>

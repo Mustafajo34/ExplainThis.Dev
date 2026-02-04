@@ -9,49 +9,48 @@ import "./App.css";
 
 import Chat from "./pages/Chat";
 
-
-// --- Config ---
+//! --- Config ---
 const HARD_CAP = 3;
 const COOLDOWN_MS = 60 * 1000; // 1 minute
 
-// --- Helpers ---
+//! --- Helpers ---
 function getTodayKey() {
   return new Date().toISOString().slice(0, 10);
 }
-
+//? request count helper
 function getRequestCount() {
   return parseInt(
     localStorage.getItem(`requestCount-${getTodayKey()}`) || "0",
-    10
+    10,
   );
 }
-
+//? incremented count function
 function incrementRequestCount() {
   const key = `requestCount-${getTodayKey()}`;
   localStorage.setItem(key, getRequestCount() + 1);
 }
-
+//? lock function
 function getLockUntil() {
   return parseInt(localStorage.getItem("lockUntil") || "0", 10);
 }
-
+//? cool down function
 function startCooldown() {
   localStorage.setItem("lockUntil", Date.now() + COOLDOWN_MS);
 }
-
+//? locked function
 function isLocked() {
   return Date.now() < getLockUntil();
 }
-
+//? clear cooldown function
 function clearCooldown() {
   localStorage.removeItem("lockUntil");
   localStorage.removeItem(`requestCount-${getTodayKey()}`);
 }
 
 function App() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // --- State ---
+  //! --- State ---
   const [input, setInput] = useState("");
   const [explanation, setExplanation] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -69,7 +68,7 @@ function App() {
     }
   });
 
-  // --- Lock state ---
+  //! --- Lock state ---
   const [lockTimer, setLockTimer] = useState(() => {
     const remaining = Math.ceil((getLockUntil() - Date.now()) / 1000);
     return remaining > 0 ? remaining : 0;
@@ -77,7 +76,7 @@ function App() {
 
   const intervalRef = useRef(null);
 
-  // --- Countdown ---
+  //! --- Countdown ---
   useEffect(() => {
     if (lockTimer <= 0) {
       clearInterval(intervalRef.current);
@@ -100,12 +99,20 @@ function App() {
   }, [lockTimer]);
 
   // --- Handlers ---
-  const handleDelete = (idToDelete) => {
+  /*   const handleDelete = (idToDelete) => {
     const updated = savedInput.filter((item) => item.id !== idToDelete);
     setSavedInput(updated);
     localStorage.setItem("savedInput", JSON.stringify(updated));
+  }; */
+  //!Delete handler
+  const handleDelete = (idToDelete) => {
+    setSavedInput((prev) => {
+      const updated = prev.filter((item) => item.id !== idToDelete);
+      localStorage.setItem("savedInput", JSON.stringify(updated));
+      return updated;
+    });
   };
-
+  //! clear page function for Nav
   const handleNewChat = () => {
     setExplanation(null);
     setInput("");
@@ -113,17 +120,17 @@ function App() {
     setLoading(false);
     navigate("/new");
   };
-
+  //! handle fetch for data to backend
   const handleSubmit = async () => {
     if (!input.trim()) return;
 
-    // 🔒 Block only if cooldown is active
+    //? Block only if cooldown is active
     if (isLocked()) {
       setError(`Daily limit reached. Please wait ${lockTimer}s.`);
       return;
     }
 
-    // ✅ Allow submits freely until HARD_CAP
+    //? Allow submits freely until HARD_CAP
     if (getRequestCount() >= HARD_CAP) {
       startCooldown();
       setLockTimer(COOLDOWN_MS / 1000);
@@ -136,6 +143,7 @@ function App() {
     setExplanation(null);
 
     try {
+      //? fetch response
       const response = await fetch("http://localhost:4189/api/python", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -146,17 +154,18 @@ function App() {
         const errData = await response.json();
         throw new Error(errData.error || "Unable to retrieve data");
       }
-
+      //? fetched data
       const data = await response.json();
       setExplanation(data.content);
 
+      //? object that takes in input data
       const newItem = {
         id: crypto.randomUUID(),
         text: input,
         output: data.content,
         createdAt: Date.now(),
       };
-
+      //? save data to local storage
       const updated = [newItem, ...savedInput];
       setSavedInput(updated);
       localStorage.setItem("savedInput", JSON.stringify(updated));
@@ -169,7 +178,7 @@ function App() {
       setLoading(false);
     }
   };
-
+  //? create a dynamic id that matches data id
   const ExplainSavedItem = () => {
     const { id } = useParams();
     const item = savedInput.find((i) => i.id === id);
@@ -186,19 +195,26 @@ function App() {
         onDelete={handleDelete}
         dailyCapReached={lockTimer > 0}
       />
-
+      //! Routes
       <Routes>
         <Route
           path="/"
-          element={<ExplainThis explanation={explanation} loading={loading} error={error} />}
+          element={
+            <ExplainThis
+              explanation={explanation}
+              loading={loading}
+              error={error}
+            />
+          }
         />
         <Route
           path="/new"
-          element={<Chat explanation={explanation} loading={loading} error={error} />}
+          element={
+            <Chat explanation={explanation} loading={loading} error={error} />
+          }
         />
         <Route path="/item/:id" element={<ExplainSavedItem />} />
       </Routes>
-
       <footer>
         <InputBar
           value={input}

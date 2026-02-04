@@ -4,11 +4,18 @@ import logo from "../assets/pics/ExplainThis.png";
 
 import "../Css/Nav.css";
 
-const Nav = ({ onNewChat, onDelete, savedInput, setInput, dailyCapReached }) => {
-   const [toggle, setToggle] = useState(false);
-
+const Nav = ({
+  onNewChat,
+  onDelete,
+  savedInput,
+  setInput,
+  dailyCapReached,
+}) => {
+  //! --state--
+  const [toggle, setToggle] = useState(false);
+  //! handle toggle functions
   const handleToggle = () => setToggle((prev) => !prev);
-
+  //! handle click function
   const handleLinkClick = () => {
     setToggle(false);
     if (setInput) setInput("");
@@ -17,13 +24,14 @@ const Nav = ({ onNewChat, onDelete, savedInput, setInput, dailyCapReached }) => 
   return (
     <nav className="main-nav">
       <div className="nav-header">
+        {/* Toggle */}
         <span onClick={handleToggle} id="hamburger_sign">
           {toggle ? "✖" : "☰"}
         </span>
         <img src={logo} alt="Explain This logo" className="nav-logo" />
       </div>
-
       <ul className={toggle ? "open" : "close"}>
+        {/* daily cap reached */}
         <div id="link_wrapper">
           <Link
             to="/new"
@@ -42,7 +50,7 @@ const Nav = ({ onNewChat, onDelete, savedInput, setInput, dailyCapReached }) => 
             New Chat
           </Link>
         </div>
-
+        {/* savedInput check  */}
         {savedInput.length === 0 ? (
           <p className="no-chats">No saved chats</p>
         ) : (
@@ -56,11 +64,12 @@ const Nav = ({ onNewChat, onDelete, savedInput, setInput, dailyCapReached }) => 
                   }
                   onClick={handleLinkClick}
                 >
+                  {/* input display length on Nav */}
                   {item.text?.length > 15
                     ? item.text.slice(0, 15) + "..."
                     : item.text}
                 </NavLink>
-
+                {/* delete symbol " x " */}
                 <span
                   id="delete_symbol"
                   onClick={(e) => {
