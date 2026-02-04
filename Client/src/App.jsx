@@ -144,7 +144,9 @@ function App() {
 
     try {
       //? fetch response
-      const response = await fetch("http://localhost:4189/api/python", {
+      const apiUrl = import.meta.env.VITE_APP_URL;
+      console.log(apiUrl);
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input }),
