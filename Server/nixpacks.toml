@@ -1,17 +1,26 @@
-# Define the environments/tools you want
+# File: nixpacks.toml
+
+# Define the runtimes your project needs
 providers = ["node", "python"]
 
 # Setup phase: install system packages
 [phases.setup]
-nixPkgs = ["nodejs", "python3", "python3Packages.pip"]
+nixPkgs = [
+    "nodejs"              # Node.js runtime
+    "python3"             # Python runtime
+    "python3Packages.pip" # pip for installing Python packages
+]
 
 # Install dependencies
 [phases.install]
 cmds = [
-    "npm install",
-    "pip install -r requirements.txt"
+    # npm install with cache to speed up repeated builds
+    "mkdir -p /root/.npm && npm install --cache /root/.npm",
+
+    # pip install with cache for faster Python dependency installs
+    "mkdir -p /root/.cache/pip && pip install --cache-dir /root/.cache/pip -r requirements.txt"
 ]
 
-# Start your application
+# Start the app
 [start]
 cmd = "node server.js"
