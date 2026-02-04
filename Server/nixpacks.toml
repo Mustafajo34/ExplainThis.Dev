@@ -1,4 +1,7 @@
 [phases.setup]
+# nixpacks.toml inside your /Server folder
+providers = ["node", "python"]
+
 nixPkgs = ["nodejs", "python311"]
 
 [phases.install]
