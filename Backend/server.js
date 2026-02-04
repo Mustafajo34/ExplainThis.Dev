@@ -2,7 +2,13 @@ require("dotenv").config(); // dotenv initialized
 const express = require("express"); // express declared
 const cors = require("cors"); // cors declared
 const app = express(); //app declared
-app.use(cors()); //cors initialized
+app.use(
+  cors({
+    origin: "https://explain-this-frontend.vercel.app",
+    method: ["GET", "POST"],
+    credentials: true,
+  }),
+); //cors initialized
 const PORT = process.env.PORT || 5000; //port initialized
 
 app.use(express.json());
