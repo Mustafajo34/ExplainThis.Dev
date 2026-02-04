@@ -1,8 +1,11 @@
 # Force rebuild 1
 providers = ["node", "python"]
 
+[variables]
+PATH = "/opt/venv/bin:$PATH"
+
 [phases.setup]
-nixPkgs = ["nodejs"] 
+nixPkgs = ["nodejs", "python311", "python311Packages.pip"]
 
 [phases.install]
 cmds = [
