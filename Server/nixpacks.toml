@@ -1,10 +1,17 @@
-providers = ["node", "python"]  
+# Define the environments/tools you want
+providers = ["node", "python"]
 
+# Setup phase: install system packages
 [phases.setup]
-nixPkgs = ["nodejs"]             
+nixPkgs = ["nodejs", "python3", "python3Packages.pip"]
 
+# Install dependencies
 [phases.install]
-cmds = ["npm install", "pip install -r requirements.txt"]
+cmds = [
+    "npm install",
+    "pip install -r requirements.txt"
+]
 
+# Start your application
 [start]
 cmd = "node server.js"
