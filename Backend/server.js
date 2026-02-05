@@ -4,8 +4,8 @@ const cors = require("cors"); // cors declared
 const app = express(); //app declared
 app.use(
   cors({
-    origin: [/https:\/\/explain-this-frontend\.vercel\.app$/, /\.vercel\.app$/] ,
-    method: ["GET", "POST"],
+    origin: [/https:\/\/explain-this-frontend\.vercel\.app$/, /\.vercel\.app$/],
+    methods: ["GET", "POST"],
     credentials: true,
   }),
 ); //cors initialized
