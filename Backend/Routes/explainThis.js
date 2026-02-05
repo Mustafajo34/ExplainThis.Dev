@@ -6,8 +6,12 @@ const path = require("path");
 router.post("/python", validateInput, (req, res) => {
   const { input } = req.body;
 
-  const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
-  const pythonPath = path.resolve(__dirname, "../LLM/venv/Scripts/python.exe");
+ /*  const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
+  const pythonPath = path.resolve(__dirname, "../LLM/venv/Scripts/python.exe"); */
+
+  const scriptPath = "/app/Backend/LLM/explainthis_llm.py";
+const pythonPath = "/opt/venv/bin/python3";
+
 
   const python = spawn(pythonPath, [scriptPath]);
 
