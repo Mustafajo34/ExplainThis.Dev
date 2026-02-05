@@ -6,12 +6,14 @@ const path = require("path");
 router.post("/python", validateInput, (req, res) => {
   const { input } = req.body;
 
- /*  const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
+  /*  const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
   const pythonPath = path.resolve(__dirname, "../LLM/venv/Scripts/python.exe"); */
 
-  const scriptPath = "/app/Backend/LLM/explainthis_llm.py";
-const pythonPath = "/opt/venv/bin/python3";
+  // This resolves to: /app/Backend/LLM/explainthis_llm.py (Correct for Linux)
+  const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
 
+  // This points to the high-performance Python 3.11 environment we built on Railway
+  const pythonPath = "/opt/venv/bin/python3";
 
   const python = spawn(pythonPath, [scriptPath]);
 
