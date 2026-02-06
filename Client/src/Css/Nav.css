@@ -330,7 +330,7 @@ ul::-webkit-scrollbar-track {
 
   ul.open,
   ul.close {
-    width: 25vw;
+    width: 15dvw;
     max-width: 400px;
     top: 5.6rem;
   }
