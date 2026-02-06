@@ -114,15 +114,6 @@ button:disabled {
   }
 }
 
-/* Small device override */
-@media (max-width: 480px) {
-  #textArea_bar,
-  #submit_question,
-  .lock-message {
-    max-width: 100%;
-  }
-}
-
 @media screen and (min-width: 344px) and (max-width: 344px) {
   #textArea_bar {
     width: 15rem;
@@ -238,5 +229,14 @@ button:disabled {
     border-radius: 5px;
     padding: 5px 10px;
     animation: pulse 1.2s infinite;
+  }
+}
+@media screen and (min-width: 1200px)  {
+  #textArea_bar {
+    width: 60rem;
+  }
+  /* submit button */
+  #submit_question {
+    width: 60rem;
   }
 }
