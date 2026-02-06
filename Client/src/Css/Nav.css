@@ -28,6 +28,7 @@ nav {
   z-index: 100;
 
   -webkit-transform: translateZ(0); /* smooth rendering on iOS */
+  transform: translateZ(0);
 }
 
 /* Disabled styles */
