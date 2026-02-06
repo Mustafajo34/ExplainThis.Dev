@@ -73,8 +73,8 @@ main {
 }
 
 .loading-dot {
-  width: 6px;
-  height: 6px;
+  width: 2dvh;
+  height: 2dvh;
   background: white;
   border-radius: 50%;
   animation: loading-bounce 1.4s infinite ease-in-out both;
@@ -93,7 +93,9 @@ main {
 }
 
 @keyframes loading-bounce {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
     opacity: 0.3;
   }
