@@ -1,14 +1,22 @@
-import React from 'react'
-import Title from '../components/Title'
-const Chat = ({explanation, loading, error}) => {
+import React from "react";
+import Title from "../components/Title";
+const Chat = ({ explanation, loading, error }) => {
   return (
     <div>
-       <main>
-        <div className='new-chat' >
-          <Title/>
+      <main>
+        <div className="new-chat">
+          <Title />
         </div>
         {/* loading sign */}
-        {loading && <p className="loading">Generating your explanation...</p>}
+        {loading && (
+          <p className="loading" aria-live="polite">
+            <span className="loading-dots">
+              <span className="loading-dot loading-dot--1"></span>
+              <span className="loading-dot loading-dot--2"></span>
+              <span className="loading-dot loading-dot--3"></span>
+            </span>
+          </p>
+        )}
         {/* error notify if loading unsuccessful */}
         {error && <p className="error">{error}</p>}
         {/* render fetched explanation */}
@@ -51,9 +59,8 @@ const Chat = ({explanation, loading, error}) => {
           </section>
         )}
       </main>
-      
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
