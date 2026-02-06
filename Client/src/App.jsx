@@ -12,6 +12,7 @@ import Chat from "./pages/Chat";
 //! --- Config ---
 const HARD_CAP = 2;
 const COOLDOWN_MS = 60 * 1000; // 1 minute
+const COOLDOWN_VERSION = 1; // Increment this whenever you change COOLDOWN_MS
 
 //! --- Helpers ---
 function getTodayKey() {
@@ -36,6 +37,7 @@ function getLockUntil() {
 //? cool down function
 function startCooldown() {
   localStorage.setItem("lockUntil", Date.now() + COOLDOWN_MS);
+  localStorage.setItem("cooldownVersion", COOLDOWN_VERSION);
 }
 //? locked function
 function isLocked() {
@@ -47,8 +49,16 @@ function clearCooldown() {
   localStorage.removeItem(`requestCount-${getTodayKey()}`);
 }
 
+//? Ensure latest cooldown version is set
+function ensureLatestCooldown() {
+  const storedVersion = parseInt(localStorage.getItem("cooldownVersion") || "0", 10);
+  if (storedVersion !== COOLDOWN_VERSION) {
+    startCooldown(); // resets cooldown for all clients
+  }
+}
+
 function App() {
-  const navigate = useNavigate();
+   const navigate = useNavigate();
 
   //! --- State ---
   const [input, setInput] = useState("");
@@ -70,6 +80,7 @@ function App() {
 
   //! --- Lock state ---
   const [lockTimer, setLockTimer] = useState(() => {
+    ensureLatestCooldown();
     const remaining = Math.ceil((getLockUntil() - Date.now()) / 1000);
     return remaining > 0 ? remaining : 0;
   });
@@ -98,13 +109,7 @@ function App() {
     return () => clearInterval(intervalRef.current);
   }, [lockTimer]);
 
-  // --- Handlers ---
-  /*   const handleDelete = (idToDelete) => {
-    const updated = savedInput.filter((item) => item.id !== idToDelete);
-    setSavedInput(updated);
-    localStorage.setItem("savedInput", JSON.stringify(updated));
-  }; */
-  //!Delete handler
+  //! --- Handlers ---
   const handleDelete = (idToDelete) => {
     setSavedInput((prev) => {
       const updated = prev.filter((item) => item.id !== idToDelete);
@@ -112,7 +117,7 @@ function App() {
       return updated;
     });
   };
-  //! clear page function for Nav
+
   const handleNewChat = () => {
     setExplanation(null);
     setInput("");
@@ -120,17 +125,15 @@ function App() {
     setLoading(false);
     navigate("/new");
   };
-  //! handle fetch for data to backend
+
   const handleSubmit = async () => {
     if (!input.trim()) return;
 
-    //? Block only if cooldown is active
     if (isLocked()) {
       setError(`Daily limit reached. Please wait ${lockTimer}s.`);
       return;
     }
 
-    //? Allow submits freely until HARD_CAP
     if (getRequestCount() >= HARD_CAP) {
       startCooldown();
       setLockTimer(COOLDOWN_MS / 1000);
@@ -143,9 +146,7 @@ function App() {
     setExplanation(null);
 
     try {
-      //? fetch response
       const apiUrl = import.meta.env.VITE_APP_URL;
-      console.log(apiUrl);
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -156,18 +157,17 @@ function App() {
         const errData = await response.json();
         throw new Error(errData.error || "Unable to retrieve data");
       }
-      //? fetched data
+
       const data = await response.json();
       setExplanation(data.content);
 
-      //? object that takes in input data
       const newItem = {
         id: crypto.randomUUID(),
         text: input,
         output: data.content,
         createdAt: Date.now(),
       };
-      //? save data to local storage
+
       const updated = [newItem, ...savedInput];
       setSavedInput(updated);
       localStorage.setItem("savedInput", JSON.stringify(updated));
@@ -180,7 +180,7 @@ function App() {
       setLoading(false);
     }
   };
-  //? create a dynamic id that matches data id
+
   const ExplainSavedItem = () => {
     const { id } = useParams();
     const item = savedInput.find((i) => i.id === id);
@@ -197,7 +197,6 @@ function App() {
         onDelete={handleDelete}
         dailyCapReached={lockTimer > 0}
       />
-      //! Routes
       <Routes>
         <Route
           path="/"
