@@ -232,7 +232,7 @@ function App() {
           onChange={setInput}
           onSubmit={handleSubmit}
           dailyCapReached={lockTimer > 0}
-          lockTimer={lockTimer}
+          lockTimer={formatLockTime(lockTimer)}
         />
       </footer>
     </div>
