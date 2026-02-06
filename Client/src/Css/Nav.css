@@ -58,8 +58,8 @@ nav {
 /* Logo */
 .nav-logo {
   position: fixed;
-  right: 1rem;
-  top: 1rem;
+  right: 1dvh;
+  top: 1.5dvh;
 
   border-radius: 50%;
   height: 3rem;
