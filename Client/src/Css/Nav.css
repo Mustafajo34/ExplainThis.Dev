@@ -195,7 +195,7 @@ ul::-webkit-scrollbar-track {
   ul.close {
     width: 100%;
     max-width: 45vw;
-    top: 5.1rem;
+    top: 9.2dvh;
   }
 
   #hamburger_sign {
@@ -204,8 +204,10 @@ ul::-webkit-scrollbar-track {
   }
 
   .nav-logo {
-    right: 1rem;
-    top: 1rem;
+    right: 2dvh;
+    top: 2dvh;
+    width: 5dvh;
+    height: 5dvh;
   }
 }
 /* TABLET 2 */
@@ -213,8 +215,8 @@ ul::-webkit-scrollbar-track {
   ul.open,
   ul.close {
     width: 100%;
-    max-width: 50vw;
-    top: 5.8rem;
+    max-width: 50dvw;
+    top: 9.3dvh;
   }
 
   .no-chats {
@@ -236,12 +238,15 @@ ul::-webkit-scrollbar-track {
 
   #hamburger_sign {
     font-size: 2rem;
+    top: 3dvh;
     left: 2rem;
   }
 
   .nav-logo {
-    right: 1rem;
-    top: 1rem;
+    right: 2dvh;
+    top: 2dvh;
+    width: 5dvh;
+    height: 5dvh;
   }
 }
 
@@ -249,7 +254,7 @@ ul::-webkit-scrollbar-track {
 @media screen and (min-width: 920px) and (max-width: 1023px) {
   ul.open,
   ul.close {
-    width: 50vw;
+    width: 50dvw;
     max-width: 350px;
     top: 5.5rem;
   }
@@ -273,7 +278,7 @@ ul::-webkit-scrollbar-track {
 
   ul.open,
   ul.close {
-    width: 40vw;
+    width: 40dvw;
     max-width: 400px;
     top: 8.5rem;
   }

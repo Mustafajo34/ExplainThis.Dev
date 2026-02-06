@@ -1,4 +1,4 @@
-/* ---------------- GLOBAL RESET ---------------- */
+/* GLOBAL RESET  */
 *,
 *::before,
 *::after {
@@ -20,7 +20,7 @@ body {
   background: linear-gradient(155deg, purple, black);
 }
 
-/* ---------------- HEADER ---------------- */
+/*  HEADER  */
 header {
   display: flex;
   justify-content: center;
@@ -34,7 +34,7 @@ header {
   padding: 0 1rem;
 }
 
-/* ---------------- MAIN LAYOUT ---------------- */
+/*  MAIN LAYOUT  */
 main {
   display: flex;
   flex-direction: column;
@@ -49,7 +49,7 @@ main {
   overflow: hidden;
 }
 
-/* ---------------- LOADING & ERROR ---------------- */
+/*  LOADING & ERROR  */
 .loading,
 .error {
   flex-shrink: 0;
@@ -69,7 +69,7 @@ main {
   font-weight: 500;
 }
 
-/* ---------------- EXPLANATION OUTPUT ---------------- */
+/*  EXPLANATION OUTPUT  */
 .explanation-output {
   display: flex;
   flex-direction: column;
@@ -82,7 +82,7 @@ main {
   padding: 1rem;
 
   flex: 1;
-  min-height: 0; /* IMPORTANT for mobile flex scrolling */
+  min-height: 0;
   overflow-y: auto;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -90,7 +90,7 @@ main {
   -webkit-overflow-scrolling: touch;
 }
 
-/* -------- WebKit Scrollbars (Chrome, Safari, Edge) -------- */
+/*  WebKit Scrollbars   */
 .explanation-output::-webkit-scrollbar {
   width: 8px;
 }
@@ -110,7 +110,7 @@ main {
   scrollbar-color: rgba(235, 13, 216, 0.5) #1a191a;
 }
 
-/* ---------------- TYPOGRAPHY RESET ---------------- */
+/*TYPOGRAPHY RESET  */
 .explanation-output,
 .explanation-output * {
   font-family:
@@ -144,14 +144,14 @@ main {
   display: block;
 }
 
-/* ---------------- LANGUAGE LABEL ---------------- */
+/* LANGUAGE LABEL  */
 .language-label {
   font-size: 0.95rem;
   font-weight: 500;
   color: #555;
 }
 
-/* ---------------- SECTION CARDS ---------------- */
+/* SECTION CARDS  */
 .section {
   display: flex;
   flex-direction: column;
@@ -209,7 +209,7 @@ code {
   overflow-x: auto;
 }
 
-/* ---------------- FOOTER ---------------- */
+/* FOOTER  */
 footer {
   display: flex;
   flex-direction: column;
@@ -223,7 +223,7 @@ footer {
   bottom: 1.5rem;
 }
 
-/* ---------------- RESPONSIVE TWEAKS ---------------- */
+/*  RESPONSIVE TWEAKS */
 @media (max-width: 480px) {
   .section {
     padding: 0.8rem;
@@ -242,10 +242,11 @@ footer {
   }
 }
 
-
 /* TABLETS 1 */
 @media screen and (min-width: 768px) and (max-width: 768px) {
   main {
+    height: 75dvh;
+    margin-top: 6dvh;
     padding: 2rem;
   }
 
@@ -270,7 +271,7 @@ footer {
 @media screen and (min-width: 820px) and (max-width: 820px) {
   main {
     height: 75vh;
-    margin-top: 1rem;
+    margin-top: 8dvh;
     padding: 2rem;
   }
 
@@ -303,7 +304,7 @@ footer {
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
   main {
     height: 75vh;
-    margin-top: 4rem;
+    margin-top: 8dvh;
     padding: 2rem;
   }
 
