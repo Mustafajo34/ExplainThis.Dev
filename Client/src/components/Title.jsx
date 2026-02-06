@@ -3,13 +3,13 @@ import "../Css/Title.css";
 
 const Title = () => {
   const TITLES = [
-  ["Welcome", "to", "ExplainThis.Dev"],
-  ["Learn", "With", "Confidence"],
-  ["Ask", "Better", "Questions"],
-  ["Build", "Smarter", "Apps"],
-];
+    ["Welcome", "to", "ExplainThis.Dev"],
+    ["Learn", "to", "Code"],
+    ["How", "Can", "I", "Help"],
+    ["Build", "Smarter", "Apps"],
+  ];
   /* state that handles fade in fade out for title */
- const [fadeOut, setFadeOut] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   // Pick random title only ONCE per page load
   const [title] = useState(() => {
