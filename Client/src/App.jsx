@@ -11,7 +11,7 @@ import Chat from "./pages/Chat";
 
 //! --- Config ---
 const HARD_CAP = 2;
-const COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours
+const COOLDOWN_MS = 60 * 1000; // 1 minute
 
 //! --- Helpers ---
 function getTodayKey() {
