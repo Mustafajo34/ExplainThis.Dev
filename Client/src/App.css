@@ -73,8 +73,8 @@ main {
 }
 
 .loading-dot {
-  width: 2dvh;
-  height: 2dvh;
+  width: 4dvh;
+  height: 4dvh;
   background: white;
   border-radius: 50%;
   animation: loading-bounce 1.4s infinite ease-in-out both;

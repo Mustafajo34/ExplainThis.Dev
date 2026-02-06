@@ -12,7 +12,7 @@ const ExplainThis = ({ loading, error, explanation }) => {
         {/* loading sign */}
        {loading && (
   <p className="loading" aria-live="polite">
-    Generating your explanation
+    
     <span className="loading-dots">
       <span className="loading-dot loading-dot--1"></span>
       <span className="loading-dot loading-dot--2"></span>
