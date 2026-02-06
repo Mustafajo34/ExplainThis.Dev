@@ -10,8 +10,8 @@ import "./App.css";
 import Chat from "./pages/Chat";
 
 //! --- Config ---
-const HARD_CAP = 3;
-const COOLDOWN_MS = 60 * 1000; // 1 minute
+const HARD_CAP = 2;
+const COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours
 
 //! --- Helpers ---
 function getTodayKey() {
