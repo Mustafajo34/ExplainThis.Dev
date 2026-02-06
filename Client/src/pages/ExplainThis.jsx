@@ -10,7 +10,16 @@ const ExplainThis = ({ loading, error, explanation }) => {
     <div className="explain-container">
       <main>
         {/* loading sign */}
-        {loading && <p className="loading">Generating your explanation...</p>}
+       {loading && (
+  <p className="loading" aria-live="polite">
+    Generating your explanation
+    <span className="loading-dots">
+      <span className="loading-dot loading-dot--1"></span>
+      <span className="loading-dot loading-dot--2"></span>
+      <span className="loading-dot loading-dot--3"></span>
+    </span>
+  </p>
+)}
         {/* error notify if loading unsuccessful */}
         {error && <p className="error">{error}</p>}
         {/* render fetched explanation */}
