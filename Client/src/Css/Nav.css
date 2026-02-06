@@ -19,7 +19,7 @@ nav {
   height: 9.3dvh;
   min-height: 60px; /* prevents tiny navbar on short screens */
 
-  padding: 0 1rem;
+  padding: 0 3rem;
 
   position: fixed;
   top: 0;
