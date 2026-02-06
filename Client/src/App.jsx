@@ -47,6 +47,21 @@ function clearCooldown() {
   localStorage.removeItem(`requestCount-${getTodayKey()}`);
 }
 
+// formatter (hours support)
+function formatLockTime(totalSeconds) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  }
+
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
 function App() {
   const navigate = useNavigate();
 
@@ -98,12 +113,6 @@ function App() {
     return () => clearInterval(intervalRef.current);
   }, [lockTimer]);
 
-  // --- Handlers ---
-  /*   const handleDelete = (idToDelete) => {
-    const updated = savedInput.filter((item) => item.id !== idToDelete);
-    setSavedInput(updated);
-    localStorage.setItem("savedInput", JSON.stringify(updated));
-  }; */
   //!Delete handler
   const handleDelete = (idToDelete) => {
     setSavedInput((prev) => {
@@ -112,6 +121,7 @@ function App() {
       return updated;
     });
   };
+
   //! clear page function for Nav
   const handleNewChat = () => {
     setExplanation(null);
@@ -120,13 +130,16 @@ function App() {
     setLoading(false);
     navigate("/new");
   };
+
   //! handle fetch for data to backend
   const handleSubmit = async () => {
     if (!input.trim()) return;
 
     //? Block only if cooldown is active
     if (isLocked()) {
-      setError(`Daily limit reached. Please wait ${lockTimer}s.`);
+      setError(
+        `Daily limit reached. Please wait ${formatLockTime(lockTimer)}.`,
+      );
       return;
     }
 
@@ -143,9 +156,7 @@ function App() {
     setExplanation(null);
 
     try {
-      //? fetch response
       const apiUrl = import.meta.env.VITE_APP_URL;
-      console.log(apiUrl);
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -156,18 +167,17 @@ function App() {
         const errData = await response.json();
         throw new Error(errData.error || "Unable to retrieve data");
       }
-      //? fetched data
+
       const data = await response.json();
       setExplanation(data.content);
 
-      //? object that takes in input data
       const newItem = {
         id: crypto.randomUUID(),
         text: input,
         output: data.content,
         createdAt: Date.now(),
       };
-      //? save data to local storage
+
       const updated = [newItem, ...savedInput];
       setSavedInput(updated);
       localStorage.setItem("savedInput", JSON.stringify(updated));
@@ -180,7 +190,7 @@ function App() {
       setLoading(false);
     }
   };
-  //? create a dynamic id that matches data id
+
   const ExplainSavedItem = () => {
     const { id } = useParams();
     const item = savedInput.find((i) => i.id === id);
@@ -197,7 +207,6 @@ function App() {
         onDelete={handleDelete}
         dailyCapReached={lockTimer > 0}
       />
-      //! Routes
       <Routes>
         <Route
           path="/"
