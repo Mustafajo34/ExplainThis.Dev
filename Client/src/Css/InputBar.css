@@ -196,4 +196,7 @@ button:disabled {
   #submit_question {
     width: 60rem;
   }
+  #submit_question:hover {
+    cursor: pointer;
+  }
 }
