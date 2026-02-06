@@ -1,11 +1,20 @@
-/* input bar  */
+/* Prevent width overflow issues */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* input bar */
 form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
+  padding: 0 1rem; /* prevents edge touching on small screens */
 }
-/* text Area */
 
+/* text Area */
 #textArea_bar {
   width: 100%;
   max-width: 20rem;
@@ -16,15 +25,24 @@ form {
   background-color: rgb(41, 40, 40);
   text-align: center;
   padding: 0.5rem 1rem;
-  font-size: 1rem;
+
+  font-size: 16px; /* prevents iOS zoom on focus */
   color: white;
   text-shadow: 2px 2px 8px black;
+
+  resize: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  border-radius: 6px; /* smooth mobile rendering */
 }
+
 /* submit button */
 #submit_question {
   width: 100%;
   max-width: 20rem;
   height: 4rem;
+
   font-size: 0.8rem;
   border: 0.5px solid black;
   box-shadow: 2px 2px 8px black;
@@ -35,28 +53,23 @@ form {
   text-shadow: 2px 2px 8px black;
   background-color: rgb(238, 9, 238);
   color: white;
-}
-textarea::-webkit-scrollbar {
-  width: 8px;
+
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 6px;
 }
 
-textarea::-webkit-scrollbar-thumb {
-  background-color: rgba(248, 5, 228, 0.5);
-  border-radius: 4px;
+/* Remove tap highlight on mobile */
+#submit_question,
+#textArea_bar {
+  -webkit-tap-highlight-color: transparent;
 }
 
-textarea::-webkit-scrollbar-track {
-  background-color: #1a191a;
-}
-
-#submit_question:hover {
-  cursor: pointer;
-}
-
+/* Disabled styles */
 .disabled-link {
-  opacity: 0.5; /* faded look */
-  pointer-events: none; /* prevents clicks */
-  cursor: not-allowed; /* shows “not-allowed” cursor */
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 textarea:disabled {
@@ -67,11 +80,15 @@ textarea:disabled {
 button:disabled {
   background-color: #ccc;
   color: #666;
-  cursor: none;
+  cursor: not-allowed;
 }
+
 /* Countdown / lock message */
 .lock-message {
-  color: #d9534f; /* red for attention */
+  width: 100%;
+  max-width: 20rem;
+
+  color: #d9534f;
   font-weight: bold;
   margin-top: 5px;
   font-size: 1rem;
@@ -80,10 +97,11 @@ button:disabled {
   border: 1px solid #f5c6cb;
   border-radius: 5px;
   padding: 5px 10px;
+
   animation: pulse 1.2s infinite;
 }
 
-/* Optional: subtle pulse animation */
+/* Pulse animation */
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -93,6 +111,15 @@ button:disabled {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Small device override */
+@media (max-width: 480px) {
+  #textArea_bar,
+  #submit_question,
+  .lock-message {
+    max-width: 100%;
   }
 }
 
