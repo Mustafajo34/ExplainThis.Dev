@@ -29,6 +29,46 @@ function toList(value) {
   return [];
 }
 
+function ChatRow({ chat, isActive, onSelect, onDelete, onTogglePin }) {
+  return (
+    <div
+      className={`
+        group flex w-full items-center gap-1 rounded-lg transition-all duration-150
+        ${isActive ? "bg-lavender-500/15 text-lavender-200" : "text-gray-400 hover:bg-white/5 hover:text-gray-200"}
+      `}
+    >
+      <button onClick={onSelect} className="flex min-w-0 flex-1 flex-col rounded-lg px-3 py-2.5 text-left">
+        <span className="truncate text-sm leading-snug">{chat.text}</span>
+        <span className="mt-0.5 text-xs text-gray-600">{formatChatTime(chat.createdAt)}</span>
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onTogglePin(chat.id);
+        }}
+        aria-label={chat.pinned ? "Unpin chat" : "Pin chat"}
+        className={`shrink-0 rounded p-1 transition ${
+          chat.pinned
+            ? "text-lavender-300 opacity-100"
+            : "text-gray-600 opacity-0 hover:text-gray-300 group-hover:opacity-100"
+        }`}
+      >
+        📌
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(chat.id);
+        }}
+        aria-label="Delete chat"
+        className="mr-2 shrink-0 rounded p-1 text-gray-600 opacity-0 transition hover:text-gray-300 group-hover:opacity-100"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
 function ExplanationSection({ title, items }) {
   if (items.length === 0) return null;
   return (
@@ -79,6 +119,7 @@ export default function ExplainThis({
   onNewChat,
   savedInput,
   onDelete,
+  onTogglePin,
   onSelectChat,
   activeChatId,
   dailyCapReached,
@@ -134,6 +175,8 @@ export default function ExplainThis({
   }
 
   const hasMessages = messages.length > 0;
+  const pinnedChats = savedInput.filter((chat) => chat.pinned);
+  const recentChats = savedInput.filter((chat) => !chat.pinned);
 
   return (
     <div className="relative flex h-screen w-screen overflow-hidden bg-[#0e0c14] font-[Inter,sans-serif]">
@@ -212,41 +255,52 @@ export default function ExplainThis({
 
         {/* Previous chats */}
         <div className="flex flex-1 flex-col overflow-hidden px-3 py-3">
-          <p className="mb-2 px-2 text-xs font-medium uppercase tracking-widest text-gray-600">Recent</p>
-          <div className="flex-1 space-y-0.5 overflow-y-auto">
+          <div className="flex-1 space-y-3 overflow-y-auto">
             {savedInput.length === 0 ? (
               <p className="px-2 text-xs text-gray-600">No saved chats</p>
             ) : (
-              savedInput.map((chat) => (
-                <div
-                  key={chat.id}
-                  className={`
-                    group flex w-full items-center gap-1 rounded-lg transition-all duration-150
-                    ${activeChatId === chat.id ? "bg-lavender-500/15 text-lavender-200" : "text-gray-400 hover:bg-white/5 hover:text-gray-200"}
-                  `}
-                >
-                  <button
-                    onClick={() => {
-                      onSelectChat(chat);
-                      if (window.innerWidth < 768) setSidebarOpen(false);
-                    }}
-                    className="flex min-w-0 flex-1 flex-col rounded-lg px-3 py-2.5 text-left"
-                  >
-                    <span className="truncate text-sm leading-snug">{chat.text}</span>
-                    <span className="mt-0.5 text-xs text-gray-600">{formatChatTime(chat.createdAt)}</span>
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(chat.id);
-                    }}
-                    aria-label="Delete chat"
-                    className="mr-2 shrink-0 rounded p-1 text-gray-600 opacity-0 transition hover:text-gray-300 group-hover:opacity-100"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))
+              <>
+                {pinnedChats.length > 0 && (
+                  <div>
+                    <p className="mb-2 px-2 text-xs font-medium uppercase tracking-widest text-gray-600">Pinned</p>
+                    <div className="space-y-0.5">
+                      {pinnedChats.map((chat) => (
+                        <ChatRow
+                          key={chat.id}
+                          chat={chat}
+                          isActive={activeChatId === chat.id}
+                          onSelect={() => {
+                            onSelectChat(chat);
+                            if (window.innerWidth < 768) setSidebarOpen(false);
+                          }}
+                          onDelete={onDelete}
+                          onTogglePin={onTogglePin}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {recentChats.length > 0 && (
+                  <div>
+                    <p className="mb-2 px-2 text-xs font-medium uppercase tracking-widest text-gray-600">Recent</p>
+                    <div className="space-y-0.5">
+                      {recentChats.map((chat) => (
+                        <ChatRow
+                          key={chat.id}
+                          chat={chat}
+                          isActive={activeChatId === chat.id}
+                          onSelect={() => {
+                            onSelectChat(chat);
+                            if (window.innerWidth < 768) setSidebarOpen(false);
+                          }}
+                          onDelete={onDelete}
+                          onTogglePin={onTogglePin}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -309,7 +363,7 @@ export default function ExplainThis({
 
               {/* Suggestion chips */}
               <div
-                className="animate-fade-in-up grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2"
+                className="animate-fade-in-up grid w-full max-w-2xl grid-cols-1 gap-3 lg:grid-cols-2"
                 style={{ animationDelay: "0.25s", opacity: 0 }}
               >
                 {SUGGESTIONS.map((s, i) => (

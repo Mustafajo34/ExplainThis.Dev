@@ -142,6 +142,16 @@ function App() {
     }
   };
 
+  const handleTogglePin = (idToToggle) => {
+    setSavedInput((prev) => {
+      const updated = prev.map((item) =>
+        item.id === idToToggle ? { ...item, pinned: !item.pinned } : item,
+      );
+      localStorage.setItem("savedInput", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   const handleNewChat = () => {
     setMessages([]);
     setActiveChatId(null);
@@ -232,6 +242,7 @@ function App() {
     onNewChat: handleNewChat,
     savedInput,
     onDelete: handleDelete,
+    onTogglePin: handleTogglePin,
     onSelectChat: handleSelectChat,
     activeChatId,
     dailyCapReached: lockTimer > 0,
