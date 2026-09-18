@@ -6,14 +6,12 @@ const path = require("path");
 router.post("/python", validateInput, (req, res) => {
   const { input } = req.body;
 
-  /*  const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
-  const pythonPath = path.resolve(__dirname, "../LLM/venv/Scripts/python.exe"); */
-
   // This resolves to: /app/Backend/LLM/explainthis_llm.py (Correct for Linux)
   const scriptPath = path.resolve(__dirname, "../LLM/explainthis_llm.py");
 
-  // This points to the high-performance Python 3.11 environment we built on Railway
-  const pythonPath = "/opt/venv/bin/python3";
+  // Railway's venv by default; set PYTHON_PATH in .env to override for
+  // local dev (e.g. LLM/venv/Scripts/python.exe on Windows).
+  const pythonPath = process.env.PYTHON_PATH || "/opt/venv/bin/python3";
 
   const python = spawn(pythonPath, [scriptPath]);
 
@@ -38,12 +36,8 @@ router.post("/python", validateInput, (req, res) => {
       format: "structured",
       content: {
         summary: "Internal explanation error.",
-        breakdown: [],
-        key_points: [],
-        limitations: [
-          "This explanation does not execute code.",
-          "No security or safety guarantees are made.",
-        ],
+        example:
+          "This explanation does not execute code and makes no safety guarantees.",
       },
     });
   }

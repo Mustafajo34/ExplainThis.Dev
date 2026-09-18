@@ -21,9 +21,7 @@ if not OPENAI_API_KEY:
                 "format": "structured",
                 "content": {
                     "summary": "LLM configuration error.",
-                    "breakdown": [],
-                    "key_points": [],
-                    "limitations": ["OpenAI API key is not configured."],
+                    "example": "OpenAI API key is not configured.",
                 },
             }
         )
@@ -59,11 +57,14 @@ You MUST return JSON ONLY in this exact schema:
   "format": "structured",
   "content": {
     "summary": "string",
-    "breakdown": ["string"],
-    "key_points": ["string"],
-    "limitations": ["string"]
+    "example": "string"
   }
 }
+
+Field rules:
+- "summary" is a clear, plain-language explanation of the concept.
+- "example" is a plain-language usage scenario that illustrates when or
+  how the concept applies. It MUST be written in prose, not code.
 """
 
 
@@ -79,11 +80,11 @@ requests_by_ip = defaultdict(list)
 
 # Static disclaimer
 
-STATIC_DISCLAIMER = [
-    "This explanation is for educational purposes only.",
-    "This API does not execute code.",
-    "No guarantees of correctness, safety, or performance.",
-]
+STATIC_DISCLAIMER = (
+    "This explanation is for educational purposes only. "
+    "This API does not execute code. "
+    "No guarantees of correctness, safety, or performance."
+)
 
 
 
@@ -98,9 +99,7 @@ def safe_json_loads(raw):
             "format": "structured",
             "content": {
                 "summary": "Unable to parse LLM output.",
-                "breakdown": [],
-                "key_points": [],
-                "limitations": STATIC_DISCLAIMER.copy(),
+                "example": STATIC_DISCLAIMER,
             },
         }
 
@@ -134,11 +133,7 @@ def explain_input(user_input: str, client_id="local") -> dict:
             "format": "structured",
             "content": {
                 "summary": "Rate limit exceeded.",
-                "breakdown": [],
-                "key_points": [],
-                "limitations": [
-                    f"Maximum {RATE_LIMIT} requests per {RATE_WINDOW} seconds."
-                ]
+                "example": f"Maximum {RATE_LIMIT} requests per {RATE_WINDOW} seconds. "
                 + STATIC_DISCLAIMER,
             },
         }
@@ -150,9 +145,7 @@ def explain_input(user_input: str, client_id="local") -> dict:
             "format": "structured",
             "content": {
                 "summary": "Input rejected.",
-                "breakdown": [],
-                "key_points": [],
-                "limitations": ["Input is empty."] + STATIC_DISCLAIMER,
+                "example": "Input is empty. " + STATIC_DISCLAIMER,
             },
         }
     if len(user_input) > MAX_INPUT_CHARS:
@@ -161,9 +154,7 @@ def explain_input(user_input: str, client_id="local") -> dict:
             "format": "structured",
             "content": {
                 "summary": "Input rejected.",
-                "breakdown": [],
-                "key_points": [],
-                "limitations": [f"Input exceeds {MAX_INPUT_CHARS} characters."]
+                "example": f"Input exceeds {MAX_INPUT_CHARS} characters. "
                 + STATIC_DISCLAIMER,
             },
         }
@@ -173,9 +164,7 @@ def explain_input(user_input: str, client_id="local") -> dict:
             "format": "structured",
             "content": {
                 "summary": "Input rejected.",
-                "breakdown": [],
-                "key_points": [],
-                "limitations": [f"Input exceeds {MAX_INPUT_LINES} lines."]
+                "example": f"Input exceeds {MAX_INPUT_LINES} lines. "
                 + STATIC_DISCLAIMER,
             },
         }
@@ -196,21 +185,12 @@ def explain_input(user_input: str, client_id="local") -> dict:
 
         parsed = safe_json_loads(raw)
 
-        # Merge static disclaimer without duplicating
-        existing_limits = parsed["content"].get("limitations", [])
-        for item in STATIC_DISCLAIMER:
-            if item not in existing_limits:
-                existing_limits.append(item)
-        parsed["content"]["limitations"] = existing_limits
-
         return {
             "type": "explanation",
             "format": "structured",
             "content": {
                 "summary": parsed.get("content", {}).get("summary", ""),
-                "breakdown": parsed.get("content", {}).get("breakdown", []),
-                "key_points": parsed.get("content", {}).get("key_points", []),
-                "limitations": parsed.get("content", {}).get("limitations", []),
+                "example": parsed.get("content", {}).get("example", ""),
             },
         }
 
@@ -221,9 +201,7 @@ def explain_input(user_input: str, client_id="local") -> dict:
             "format": "structured",
             "content": {
                 "summary": "Unable to generate explanation.",
-                "breakdown": [],
-                "key_points": [],
-                "limitations": STATIC_DISCLAIMER.copy(),
+                "example": STATIC_DISCLAIMER,
             },
         }
 
