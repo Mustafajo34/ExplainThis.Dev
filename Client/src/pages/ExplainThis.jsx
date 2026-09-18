@@ -33,7 +33,7 @@ function ChatRow({ chat, isActive, onSelect, onDelete, onTogglePin }) {
   return (
     <div
       className={`
-        group flex w-full items-center gap-1 rounded-lg transition-all duration-150
+        group flex w-full items-center gap-0.5 rounded-lg transition-all duration-150
         ${isActive ? "bg-lavender-500/15 text-lavender-200" : "text-gray-400 hover:bg-white/5 hover:text-gray-200"}
       `}
     >
@@ -47,13 +47,21 @@ function ChatRow({ chat, isActive, onSelect, onDelete, onTogglePin }) {
           onTogglePin(chat.id);
         }}
         aria-label={chat.pinned ? "Unpin chat" : "Pin chat"}
-        className={`shrink-0 rounded p-1 transition ${
-          chat.pinned
-            ? "text-lavender-300 opacity-100"
-            : "text-gray-600 opacity-0 hover:text-gray-300 group-hover:opacity-100"
-        }`}
+        className="shrink-0 rounded p-1.5 text-lavender-300 transition hover:bg-lavender-500/20 hover:text-lavender-200"
       >
-        📌
+        <svg
+          className="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill={chat.pinned ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9.5 3h5l.5 5-2 2v6l-1 3-1-3v-6l-2-2 .5-5z"
+          />
+        </svg>
       </button>
       <button
         onClick={(e) => {
@@ -61,9 +69,15 @@ function ChatRow({ chat, isActive, onSelect, onDelete, onTogglePin }) {
           onDelete(chat.id);
         }}
         aria-label="Delete chat"
-        className="mr-2 shrink-0 rounded p-1 text-gray-600 opacity-0 transition hover:text-gray-300 group-hover:opacity-100"
+        className="mr-1.5 shrink-0 rounded p-1.5 text-lavender-300 transition hover:bg-lavender-500/20 hover:text-lavender-200"
       >
-        ✕
+        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 7h12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-7 0v12a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7M10 11v6M14 11v6"
+          />
+        </svg>
       </button>
     </div>
   );
