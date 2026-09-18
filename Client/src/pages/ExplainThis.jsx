@@ -47,12 +47,24 @@ function ExplanationSection({ title, items }) {
   );
 }
 
+function ExampleCodeBlock({ code }) {
+  if (!code) return null;
+  return (
+    <div className="rounded-xl border border-white/5 bg-white/5 p-4">
+      <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-lavender-300">Example</h3>
+      <pre className="overflow-x-auto rounded-lg bg-black/40 p-3 text-xs leading-relaxed text-gray-200">
+        <code className="font-mono">{code}</code>
+      </pre>
+    </div>
+  );
+}
+
 function ExplanationSections({ explanation }) {
   if (!explanation) return null;
   return (
     <div className="flex flex-col gap-3">
       <ExplanationSection title="Summary" items={toList(explanation.summary)} />
-      <ExplanationSection title="Example" items={toList(explanation.example)} />
+      <ExampleCodeBlock code={explanation.example} />
     </div>
   );
 }
