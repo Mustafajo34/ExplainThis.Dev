@@ -74,13 +74,27 @@ export default function ExplainThis({
   dailyCapReached,
   lockTimer,
 }) {
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(() => {
+    try {
+      return !sessionStorage.getItem("hasSeenWelcome");
+    } catch {
+      return true;
+    }
+  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const textareaRef = useRef(null);
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowWelcome(false), 5000);
+    if (!showWelcome) return;
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+      try {
+        sessionStorage.setItem("hasSeenWelcome", "1");
+      } catch {
+        // ignore storage errors (e.g. private browsing)
+      }
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
