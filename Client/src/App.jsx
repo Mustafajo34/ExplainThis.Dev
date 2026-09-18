@@ -2,12 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams, Routes, Route } from "react-router-dom";
 
 import ExplainThis from "./pages/ExplainThis";
-import InputBar from "./components/InputBar";
-
-import Nav from "./components/Nav";
-import "./App.css";
-
-import Chat from "./pages/Chat";
 
 //! --- Config ---
 const HARD_CAP = 2;
@@ -57,14 +51,38 @@ function ensureLatestCooldown() {
   }
 }
 
+//? Wraps the shared page for a saved-chat deep link (/item/:id), loading
+//? that chat's Q&A into the live message state on mount / id change.
+function SavedItemRoute({ setMessages, setActiveChatId, ...shared }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const item = shared.savedInput.find((i) => i.id === id);
+    if (!item) {
+      navigate("/");
+      return;
+    }
+    setActiveChatId(item.id);
+    setMessages([
+      { id: `${item.id}-q`, role: "user", text: item.text },
+      { id: `${item.id}-a`, role: "assistant", explanation: item.output },
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  return <ExplainThis {...shared} />;
+}
+
 function App() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   //! --- State ---
   const [input, setInput] = useState("");
-  const [explanation, setExplanation] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [activeChatId, setActiveChatId] = useState(null);
 
   const [savedInput, setSavedInput] = useState(() => {
     try {
@@ -116,18 +134,36 @@ function App() {
       localStorage.setItem("savedInput", JSON.stringify(updated));
       return updated;
     });
+
+    if (activeChatId === idToDelete) {
+      setActiveChatId(null);
+      setMessages([]);
+      navigate("/");
+    }
   };
 
   const handleNewChat = () => {
-    setExplanation(null);
+    setMessages([]);
+    setActiveChatId(null);
     setInput("");
     setError("");
     setLoading(false);
-    navigate("/new");
+    navigate("/");
   };
 
-  const handleSubmit = async () => {
-    if (!input.trim()) return;
+  const handleSelectChat = (item) => {
+    setActiveChatId(item.id);
+    setMessages([
+      { id: `${item.id}-q`, role: "user", text: item.text },
+      { id: `${item.id}-a`, role: "assistant", explanation: item.output },
+    ]);
+    setError("");
+    navigate(`/item/${item.id}`);
+  };
+
+  const handleSubmit = async (overrideText) => {
+    const question = (overrideText ?? input).trim();
+    if (!question) return;
 
     if (isLocked()) {
       setError(`Daily limit reached. Please wait ${lockTimer}s.`);
@@ -141,16 +177,18 @@ function App() {
       return;
     }
 
+    setActiveChatId(null);
+    setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "user", text: question }]);
+    setInput("");
     setLoading(true);
     setError("");
-    setExplanation(null);
 
     try {
       const apiUrl = import.meta.env.VITE_APP_URL;
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input }),
+        body: JSON.stringify({ input: question }),
       });
 
       if (!response.ok) {
@@ -159,11 +197,15 @@ function App() {
       }
 
       const data = await response.json();
-      setExplanation(data.content);
+
+      setMessages((prev) => [
+        ...prev,
+        { id: crypto.randomUUID(), role: "assistant", explanation: data.content },
+      ]);
 
       const newItem = {
         id: crypto.randomUUID(),
-        text: input,
+        text: question,
         output: data.content,
         createdAt: Date.now(),
       };
@@ -173,7 +215,6 @@ function App() {
       localStorage.setItem("savedInput", JSON.stringify(updated));
 
       incrementRequestCount();
-      setInput("");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -181,51 +222,32 @@ function App() {
     }
   };
 
-  const ExplainSavedItem = () => {
-    const { id } = useParams();
-    const item = savedInput.find((i) => i.id === id);
-    if (!item) return <p>Item not found.</p>;
-    return <ExplainThis explanation={item.output} loading={false} error="" />;
+  const sharedProps = {
+    messages,
+    loading,
+    error,
+    input,
+    onInputChange: setInput,
+    onSubmit: handleSubmit,
+    onNewChat: handleNewChat,
+    savedInput,
+    onDelete: handleDelete,
+    onSelectChat: handleSelectChat,
+    activeChatId,
+    dailyCapReached: lockTimer > 0,
+    lockTimer,
   };
 
   return (
-    <div className="App">
-      <Nav
-        savedInput={savedInput}
-        setInput={setInput}
-        onNewChat={handleNewChat}
-        onDelete={handleDelete}
-        dailyCapReached={lockTimer > 0}
+    <Routes>
+      <Route path="/" element={<ExplainThis {...sharedProps} />} />
+      <Route
+        path="/item/:id"
+        element={
+          <SavedItemRoute setMessages={setMessages} setActiveChatId={setActiveChatId} {...sharedProps} />
+        }
       />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ExplainThis
-              explanation={explanation}
-              loading={loading}
-              error={error}
-            />
-          }
-        />
-        <Route
-          path="/new"
-          element={
-            <Chat explanation={explanation} loading={loading} error={error} />
-          }
-        />
-        <Route path="/item/:id" element={<ExplainSavedItem />} />
-      </Routes>
-      <footer>
-        <InputBar
-          value={input}
-          onChange={setInput}
-          onSubmit={handleSubmit}
-          dailyCapReached={lockTimer > 0}
-          lockTimer={lockTimer}
-        />
-      </footer>
-    </div>
+    </Routes>
   );
 }
 
