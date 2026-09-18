@@ -52,9 +52,7 @@ function ExplanationSections({ explanation }) {
   return (
     <div className="flex flex-col gap-3">
       <ExplanationSection title="Summary" items={toList(explanation.summary)} />
-      <ExplanationSection title="Breakdown" items={toList(explanation.breakdown)} />
-      <ExplanationSection title="Key Points" items={toList(explanation.key_points)} />
-      <ExplanationSection title="Limitations" items={toList(explanation.limitations)} />
+      <ExplanationSection title="Example" items={toList(explanation.example)} />
     </div>
   );
 }
