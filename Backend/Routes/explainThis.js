@@ -19,6 +19,34 @@ router.post("/python", validateInput, (req, res) => {
 
   let stdout = "";
   let stderr = "";
+  let responded = false;
+
+  const TIMEOUT_MS = 30000;
+  const timeout = setTimeout(() => {
+    if (responded) return;
+    console.error("Python process timed out");
+    python.kill("SIGKILL");
+    sendFallback();
+  }, TIMEOUT_MS);
+
+  function sendFallback() {
+    if (responded) return;
+    responded = true;
+    clearTimeout(timeout);
+    return res.status(200).json({
+      type: "explanation",
+      format: "structured",
+      content: {
+        summary: "Internal explanation error.",
+        breakdown: [],
+        key_points: [],
+        limitations: [
+          "This explanation does not execute code.",
+          "No security or safety guarantees are made.",
+        ],
+      },
+    });
+  }
 
   python.stdin.write(input);
   python.stdin.end();
@@ -31,10 +59,18 @@ router.post("/python", validateInput, (req, res) => {
     stderr += data.toString();
   });
 
+  // Without this listener, a failed spawn (e.g. missing python binary)
+  // throws an unhandled 'error' event and crashes the whole server.
+  python.on("error", (err) => {
+    console.error("Failed to start Python process:", err.message);
+    sendFallback();
+  });
+
   python.on("close", () => {
     if (stderr) {
       console.error("Python debug/error:", stderr);
     }
+    if (responded) return;
 
     try {
       // Only parse the last line of stdout (should be the JSON output)
@@ -42,22 +78,12 @@ router.post("/python", validateInput, (req, res) => {
       const lastLine = lines[lines.length - 1];
       const parsed = JSON.parse(lastLine);
 
+      responded = true;
+      clearTimeout(timeout);
       return res.json(parsed);
     } catch (err) {
       console.error("Python JSON parse error:", err.message);
-      return res.status(500).json({
-        type: "explanation",
-        format: "structured",
-        content: {
-          summary: "Internal explanation error.",
-          breakdown: [],
-          key_points: [],
-          limitations: [
-            "This explanation does not execute code.",
-            "No security or safety guarantees are made.",
-          ],
-        },
-      });
+      return sendFallback();
     }
   });
 });
